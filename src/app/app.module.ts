@@ -8,8 +8,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './core/components/header/header.component';
 import { FooterComponent } from './core/components/footer/footer.component';
-import { MessageComponent } from './core/components/message/message.component';
-
 
 
 @NgModule({
@@ -17,7 +15,6 @@ import { MessageComponent } from './core/components/message/message.component';
     AppComponent,
     HeaderComponent,
     FooterComponent,
-    MessageComponent,
   ],
   imports: [
     BrowserModule,
@@ -26,9 +23,7 @@ import { MessageComponent } from './core/components/message/message.component';
     AngularFirestoreModule
   ],
   providers: [],
-  exports: [
-    MessageComponent
-  ],
+  exports: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

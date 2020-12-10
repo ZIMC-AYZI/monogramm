@@ -1,4 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
+
+import { IUserDetail } from '../../../interfaces/i-user';
 import * as _moment from 'moment';
 
 const moment = _moment;
@@ -9,13 +11,14 @@ const moment = _moment;
   styleUrls: ['./chat-list.component.scss']
 })
 export class ChatListComponent implements OnInit {
-  @Input() user;
+  @Input() user: IUserDetail;
 
   public lastMessage = 'Show me your dicinson';
 
   constructor() { }
 
   ngOnInit(): void {
+    console.log(this.user);
   }
 
   public showCurrentDialog(): void {

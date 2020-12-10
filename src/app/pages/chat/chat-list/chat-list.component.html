@@ -1,9 +1,9 @@
 <div (click)="showCurrentDialog()" class="dialog-wrapper">
   <div class="image">
-    <img :src="user.user.photoURL" alt="">
+    <img [src]="user.info.photoURL" alt="">
   </div>
   <div class="content">
-    <p class="name">{{ user.user.displayName }}</p>
+    <p class="name">{{ user.info.displayName }}</p>
     <p class="message">{{ trimMessage(lastMessage) }}</p>
     <p class="date">{{ setDataFormat() }}</p>
   </div>
