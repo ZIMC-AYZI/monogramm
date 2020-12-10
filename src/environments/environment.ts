@@ -3,7 +3,16 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  firebase: {
+    apiKey: 'AIzaSyCXb7ayUQVxQISiXx0unRNC0Ris3y9Cz9w',
+    authDomain: 'funnyapichat.firebaseapp.com',
+    databaseURL: 'https://funnyapichat-default-rtdb.firebaseio.com',
+    projectId: 'funnyapichat',
+    storageBucket: 'funnyapichat.appspot.com',
+    messagingSenderId: '15694310143',
+    appId: '1:15694310143:web:2d533481f6079eea943aca'
+  }
 };
 
 /*

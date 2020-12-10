@@ -121,6 +121,10 @@
               "devServerTarget": "monogram:serve:production"
             }
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {}
         }
       }
     }
