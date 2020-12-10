@@ -1,1 +1,19 @@
-<h1>Login Page</h1>
+<div class="container">
+  <div class="login-wrapper">
+    <mat-card>
+      <form>
+        <mat-form-field class="example-full-width">
+          <input matInput placeholder="username">
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+          <input matInput placeholder="password">
+        </mat-form-field>
+      </form>
+      <button mat-fab color="primary"
+              aria-label="Example icon button with a delete icon"
+              (click)="login()">
+        <mat-icon aria-hidden="false" aria-label="Example home icon">login</mat-icon>
+      </button>
+    </mat-card>
+  </div>
+</div>
