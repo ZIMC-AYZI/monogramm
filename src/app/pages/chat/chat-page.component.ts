@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {FirestoreUsersService} from '../../core/services/firestore-users.service';
-import {Observable} from 'rxjs';
+
+import { FirestoreUsersService } from '../../core/services/firestore-users.service';
+import { MessagesService } from '../../core/services/messages.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-chat-page',
@@ -8,16 +10,24 @@ import {Observable} from 'rxjs';
   styleUrls: ['./chat-page.component.scss']
 })
 export class ChatPageComponent implements OnInit {
-  users$: Observable<any>;
+  public users$: Observable<any>;
+  public messages$: Observable<any>;
+
   constructor(
-    private firestoreService: FirestoreUsersService
+    private firestoreUsersService: FirestoreUsersService,
+    private messagesService: MessagesService
   ) { }
 
   ngOnInit(): void {
     this.fetchUsers();
+    this.fetchMessages();
   }
 
   private fetchUsers(): void {
-    this.users$ = this.firestoreService.getUsersList();
+    this.users$ = this.firestoreUsersService.getUsersList();
+  }
+
+  private fetchMessages(): void {
+    this.messages$ = this.messagesService.getMessagesList('92');
   }
 }

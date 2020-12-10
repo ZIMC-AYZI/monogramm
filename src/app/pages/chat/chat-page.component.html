@@ -4,10 +4,8 @@
       <h3>authUser.displayName</h3>
       <button class="remake"></button>
     </div>
-    <div *ngIf="users$ | async as users" class="dialog">
-      <ng-container *ngFor="let user of users">
+    <div *ngFor="let user of users$ | async" class="dialog">
         <app-chat-list [user]="user"></app-chat-list>
-      </ng-container>
     </div>
   </div>
   <div class="right-side">
@@ -16,9 +14,7 @@
       <p>...</p>
     </div>
     <div class="userMessage-wrapper">
-<!--      <ng-container>-->
-<!--&lt;!&ndash;        <MessageItem v-if="messageData.length" :authUser="authUser" :msg="msg"/>&ndash;&gt;-->
-<!--      </ng-container>-->
+      <app-message *ngFor="let msg of messages$ | async" [msg]="msg"></app-message>
     </div>
     <div class="wright-area">
 <!--      <MessageArea @scrollMessages="scrollMessages()" :opponent="currentUser" :authUser="authUser" />-->

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { ChatPageComponent } from './chat-page.component';
 import { ChatListComponent } from './chat-list/chat-list.component';
+import { MessageComponent } from './message/message.component';
 
 
 const routes: Routes = [
@@ -15,7 +16,8 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     ChatPageComponent,
-    ChatListComponent
+    ChatListComponent,
+    MessageComponent,
   ],
   imports: [
     CommonModule,
@@ -23,7 +25,8 @@ const routes: Routes = [
   ],
   exports: [
     ChatPageComponent,
-    ChatListComponent
+    ChatListComponent,
+    MessageComponent
   ]
 })
 export class ChatModule { }
