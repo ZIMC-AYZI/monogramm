@@ -4,9 +4,11 @@
       <h3>authUser.displayName</h3>
       <button class="remake"></button>
     </div>
-<!--    <ng-container class="dialog">-->
-<!--&lt;!&ndash;      <ChatList  @showHistory="showHistory($event)" />&ndash;&gt;-->
-<!--    </ng-container>-->
+    <div *ngIf="users$ | async as users" class="dialog">
+      <ng-container *ngFor="let user of users">
+        <app-chat-list [user]="user"></app-chat-list>
+      </ng-container>
+    </div>
   </div>
   <div class="right-side">
     <div class="right-side-header">

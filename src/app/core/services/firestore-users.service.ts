@@ -1,31 +1,29 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { AngularFirestore } from '@angular/fire/firestore';
 import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FirestoreUsersService {
-  users: Observable<any[]>;
 
   constructor(
-    private db: AngularFirestore,
-    private itemsCollection: AngularFirestoreCollection
-  ) {
-  }
+    private fireStore: AngularFirestore
+  ) { }
 
-  public fetchUsers(): Observable<any> {
-    this.db.collection('users');
-    this.itemsCollection = this.db.collection('users');
-    this.users = this.itemsCollection.snapshotChanges().pipe(
-      map(actions => actions.map(a => {
-        const data = a.payload.doc.data();
-        console.log(data)
-        const id = a.payload.doc.id;
-        console.log(data);
-        return {...data};
-      })));
-    return this.users;
+  getUsersList(): Observable<any> {
+    return this.fireStore.collection('users')
+      .snapshotChanges()
+      .pipe(
+        map((snaps) =>
+          snaps.map((snap) => {
+            return({
+            //   id: snap.payload.doc.id,
+              ...(snap.payload.doc.data() as {}),
+            });
+          }),
+        )
+      );
   }
 }

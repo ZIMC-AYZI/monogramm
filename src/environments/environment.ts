@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  firebase: {
+  firebaseConfig: {
     apiKey: 'AIzaSyCXb7ayUQVxQISiXx0unRNC0Ris3y9Cz9w',
     authDomain: 'funnyapichat.firebaseapp.com',
     databaseURL: 'https://funnyapichat-default-rtdb.firebaseio.com',
