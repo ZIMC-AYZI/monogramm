@@ -3,17 +3,23 @@
     <mat-card>
       <form>
         <mat-form-field class="example-full-width">
-          <input matInput placeholder="username">
+          <input matInput placeholder="Email">
         </mat-form-field>
         <mat-form-field class="example-full-width">
-          <input matInput placeholder="password">
+          <input matInput placeholder="Password">
         </mat-form-field>
       </form>
-      <button mat-fab color="primary"
-              aria-label="Example icon button with a delete icon"
-              (click)="login()">
-        <mat-icon aria-hidden="false" aria-label="Example home icon">login</mat-icon>
-      </button>
+      <div class="button-wrapper">
+        <button mat-flat-button color="primary"
+                aria-label="Example icon button with a delete icon"
+                (click)="login()">
+          Login With Google
+        </button>
+        <button mat-flat-button color="primary"
+                aria-label="Example icon button with a delete icon">
+          Login With Facebook
+        </button>
+      </div>
     </mat-card>
   </div>
 </div>

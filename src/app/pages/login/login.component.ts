@@ -16,8 +16,8 @@ export class LoginComponent implements OnInit {
   constructor(
     @Self() private ngOnDestroy$: NgOnDestroy,
     private authService: AuthService,
-    private router: Router
-  ) { }
+    private router: Router,
+  ) {}
 
   ngOnInit(): void {
   }
