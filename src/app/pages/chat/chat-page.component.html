@@ -1,0 +1,27 @@
+<div class="wrap">
+  <div class="dialogs-wrapper">
+    <div class="dialogs-header">
+      <h3>authUser.displayName</h3>
+      <button class="remake"></button>
+    </div>
+    <div *ngIf="users$ | async as users" class="dialog">
+      <ng-container *ngFor="let user of users">
+        <app-chat-list [user]="user"></app-chat-list>
+      </ng-container>
+    </div>
+  </div>
+  <div class="right-side">
+    <div class="right-side-header">
+      <h3>currentUser.Name</h3>
+      <p>...</p>
+    </div>
+    <div class="userMessage-wrapper">
+<!--      <ng-container>-->
+<!--&lt;!&ndash;        <MessageItem v-if="messageData.length" :authUser="authUser" :msg="msg"/>&ndash;&gt;-->
+<!--      </ng-container>-->
+    </div>
+    <div class="wright-area">
+<!--      <MessageArea @scrollMessages="scrollMessages()" :opponent="currentUser" :authUser="authUser" />-->
+    </div>
+  </div>
+</div>

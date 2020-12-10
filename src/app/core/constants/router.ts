@@ -1,6 +1,6 @@
 import { IAppRoutes } from '../../interfaces/i-router-model';
 
 export const myRoutes: IAppRoutes = {
-  home: { routerPath: '', fullPath: '/' },
+  chatPage: { routerPath: 'chatpage', fullPath: 'chatpage' },
   logIn: { routerPath: 'login', fullPath: '/login' }
 };

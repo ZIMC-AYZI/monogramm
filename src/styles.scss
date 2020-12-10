@@ -1,1 +1,94 @@
-/* You can add global styles to this file, and also import other style files */
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.container {
+  width: 1200px;
+  margin: 0 auto;
+}
+
+.app-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 30px;
+
+  .links {
+    margin-bottom: 20px;
+    text-align: center;
+
+    & .link {
+      font-size: 24px;
+      font-weight: bold;
+      text-decoration: none;
+      text-transform: uppercase;
+      color: #000;
+
+      &:hover {
+        color: #ff7069;
+      }
+
+      &:first-child {
+        margin-right: 40px;
+      }
+    }
+  }
+
+  .dialogs-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+
+    .dialogs-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      border: 1px solid #cecece;
+
+      .remake {
+        background-image: url('https://www.flaticon.com/svg/static/icons/svg/3632/3632763.svg');
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        height: 30px;
+        width: 30px;
+        outline: none;
+        border: none;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .right-side {
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+    border: 1px solid #cecece;
+
+    &-header {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px;
+
+      h3 {
+        color: #cecece;
+      }
+    }
+
+    .wright-area {
+      padding: 10px;
+    }
+
+    .userMessage-wrapper {
+      max-height: 440px;
+      margin-bottom: 20px;
+      padding: 10px;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+  }
+}

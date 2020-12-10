@@ -1,0 +1,17 @@
+<div class="dialog-wrapper">
+  <div class="date-message">
+    <p>setDataFormat</p>
+  </div>
+  <div class="content" :class="[authUser.displayName === msg.author.displayName ? 'my-message' : null]">
+    <div class="image">
+      <img :src="msg.author.photoURL" alt="">
+    </div>
+    <div class="message-wrapper">
+      <div class="message-header">
+        <p class="name">msg.author.displayName</p>
+        <p class="time">setDataFormat</p>
+      </div>
+      <p class="message">msg.text</p>
+    </div>
+  </div>
+</div>
