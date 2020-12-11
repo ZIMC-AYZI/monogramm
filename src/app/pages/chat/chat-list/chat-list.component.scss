@@ -1,44 +1,33 @@
-.dialog-wrapper {
+.mat-card{
   display: flex;
-  border: 1px solid #cecece;
-  height: 110px;
-  padding: 10px;
+  justify-content: space-between;
+  text-align: center;
+  margin: 2px 0;
   cursor: pointer;
-
-  .image {
-    width: 50px;
-    height: 50px;
-    margin-right: 10px;
-
-    img {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-    }
-  }
-
-  .content {
+  transition: 0.8s;
+  & .mat-card-header{
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: 70%;
-
-    p {
-      margin-bottom: 7px;
-    }
-
-    p.name {
-      font-weight: bold;
-    }
-
-    p.date {
-      color: #cecece;
-      letter-spacing: 1px;
+    justify-content: space-between;
+    & .mat-card-avatar{
+      border-radius: 0;
+      & img{
+        height: 60px;
+        width: 60px;
+        border-radius: 20%;
+      }
     }
   }
-
-  &:hover {
-    background: #f1f0f0;
-    border-left: 2px solid #ff7069;
+  &:hover{
+    transition: 0.8s;
+    background: rgba(103, 58, 183, 0.6);
+    .mat-card-header,.mat-card-title, .mat-card-content, .mat-card-subtitle{
+      transition: 0.8s;
+      color: #f1f0f0;
+    }
+  }
+  & .mat-card-title{
+    font-size: 15px;
+    font-weight: 500;
+    margin-bottom: 20px;
   }
 }

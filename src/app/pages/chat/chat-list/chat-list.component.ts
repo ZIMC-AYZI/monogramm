@@ -25,10 +25,10 @@ export class ChatListComponent implements OnInit {
   }
 
   public trimMessage(str: string): string {
-    return str.length > 30 ? `${ str.slice(0, 30) }...` : str;
+    return str.length > 12 ? `${ str.slice(0, 12) }...` : str;
   }
 
   public setDataFormat(): string {
-    return moment(this.user.creationTime).format('lll');
+    return moment(this.user.creationTime).format('dddd');
   }
 }

@@ -2,7 +2,9 @@
   <div class="dialogs-wrapper">
     <div class="dialogs-header">
       <h3>authUser.displayName</h3>
-      <button class="remake"></button>
+      <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
+        <mat-icon>create</mat-icon>
+      </button>
     </div>
     <div *ngFor="let user of users$ | async" class="dialog">
         <app-chat-list [user]="user"></app-chat-list>

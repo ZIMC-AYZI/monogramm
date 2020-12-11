@@ -1,10 +1,18 @@
-<div (click)="showCurrentDialog()" class="dialog-wrapper">
-  <div class="image">
-    <img [src]="user.info.photoURL" alt="">
+<mat-card (click)="showCurrentDialog()" class="example-card">
+  <mat-card-header>
+    <div mat-card-avatar class="example-header-image">
+      <img [src]="user.info.photoURL" alt="Photo of a Shiba Inu">
+    </div>
+  </mat-card-header>
+  <div class="content-wrapper">
+    <mat-card-title>{{ user.info.displayName }}</mat-card-title>
+    <mat-card-subtitle>
+      <p>{{ trimMessage(lastMessage) }}</p>
+    </mat-card-subtitle>
   </div>
-  <div class="content">
-    <p class="name">{{ user.info.displayName }}</p>
-    <p class="message">{{ trimMessage(lastMessage) }}</p>
-    <p class="date">{{ setDataFormat() }}</p>
-  </div>
-</div>
+  <mat-card-content>
+    <p>
+      {{ setDataFormat() }}
+    </p>
+  </mat-card-content>
+</mat-card>

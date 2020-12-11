@@ -4,6 +4,9 @@ import { RouterModule, Routes } from '@angular/router';
 import { ChatPageComponent } from './chat-page.component';
 import { ChatListComponent } from './chat-list/chat-list.component';
 import { MessageComponent } from './message/message.component';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 
 const routes: Routes = [
@@ -21,7 +24,10 @@ const routes: Routes = [
   ],
   imports: [
     CommonModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    MatCardModule,
+    MatButtonModule,
+    MatIconModule
   ],
   exports: [
     ChatPageComponent,
