@@ -3,6 +3,7 @@ import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Rout
 import { AuthService } from '../core/services/auth.service';
 import { Observable } from 'rxjs';
 import firebase from 'firebase';
+import {map} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -10,24 +11,18 @@ import firebase from 'firebase';
 export class AuthGuard implements CanActivate {
   constructor(
     private authService: AuthService,
-    private router: Router
   ) {
   }
 
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
-  ): boolean | Observable<boolean> | Promise<boolean> {
-    return new Promise((resolve, reject) => {
-      firebase.auth().onAuthStateChanged((user: firebase.User) => {
-        if (user) {
-          resolve(true);
-        } else {
-          console.log('User is not logged in');
-          // this.router.navigate(['/login']);
-          resolve(false);
-        }
-      });
-    });
+  ): boolean | Observable<boolean> {
+    return this.authService.getAuthUser$()
+      .pipe(
+        map((user) => {
+          return !!user;
+        })
+      );
   }
 }

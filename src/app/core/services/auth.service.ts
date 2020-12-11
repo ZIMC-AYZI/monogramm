@@ -18,8 +18,6 @@ export class AuthService {
   private user$ = this.user
     .asObservable()
     .pipe(switchMap((user: Observable<firebase.User>) => user));
-  public authState: boolean;
-  public loggedUser: object;
 
   constructor(
     private afAuth: AngularFireAuth,
@@ -55,6 +53,10 @@ export class AuthService {
           }
         })
       );
+  }
+
+  getAuthUser$(): Observable<any> {
+    return this.user$;
   }
 
   logout(): Observable<void> {
