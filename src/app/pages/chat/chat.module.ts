@@ -4,14 +4,12 @@ import { RouterModule, Routes } from '@angular/router';
 import { ChatPageComponent } from './chat-page.component';
 import { ChatListComponent } from './chat-list/chat-list.component';
 import { MessageComponent } from './message/message.component';
-import { AuthGuard } from '../../guards/auth.guard';
 
 
 const routes: Routes = [
   {
     path: '',
-    component: ChatPageComponent,
-    canActivate: [AuthGuard]
+    component: ChatPageComponent
   }
 ];
 

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { map, switchMap, take } from 'rxjs/operators';
-import { BehaviorSubject, from, Observable } from 'rxjs';
+import { BehaviorSubject, from, Observable, of } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/auth';
 import firebase from 'firebase/app';
 import 'firebase/auth';
@@ -18,6 +18,8 @@ export class AuthService {
   private user$ = this.user
     .asObservable()
     .pipe(switchMap((user: Observable<firebase.User>) => user));
+  public authState: boolean;
+  public loggedUser: object;
 
   constructor(
     private afAuth: AngularFireAuth,
