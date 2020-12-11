@@ -12,7 +12,7 @@ export class MessagesService {
     private fireStore: AngularFirestore
   ) { }
 
-  getMessagesList(collectionPath): Observable<any> {
+  getMessagesList(collectionPath: string): Observable<any> {
     return this.fireStore.collection(collectionPath, ref => ref.orderBy('date'))
       .snapshotChanges()
       .pipe(

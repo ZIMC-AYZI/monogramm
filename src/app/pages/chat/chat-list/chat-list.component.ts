@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 
-import { IUserDetail } from '../../../interfaces/i-user';
 import * as _moment from 'moment';
+import {IUserDetail} from '../../../interfaces/i-user';
 
 const moment = _moment;
 

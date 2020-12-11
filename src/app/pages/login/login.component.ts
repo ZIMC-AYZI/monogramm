@@ -5,8 +5,10 @@ import { switchMap, takeUntil } from 'rxjs/operators';
 import { NgOnDestroy } from '../../core/services/ng-on-destroy.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { myRoutes } from '../../core/constants/router';
-import { Observable } from 'rxjs';
-import { IUserInfo } from '../../interfaces/i-user';
+import {Observable} from 'rxjs';
+import {IUserDetail} from '../../interfaces/i-user';
+import firebase from 'firebase';
+import UserCredential = firebase.auth.UserCredential;
 
 @Component({
   selector: 'app-login',
@@ -36,11 +38,11 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  public login(): void {
+  login(): void {
     this.authService.loginViaGoogle()
       .pipe(
         takeUntil(this.ngOnDestroy$),
-        switchMap((user: object): Observable<IUserInfo> => {
+        switchMap((user: IUserDetail): Observable<void> => {
           return this.authService.setUserToFireData(user);
         })
       )

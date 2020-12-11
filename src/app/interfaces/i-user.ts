@@ -1,11 +1,12 @@
 export interface IUserDetail {
-  creationTime: Date;
+  creationTime: number;
   info: IUserInfo;
 }
 
 export interface IUserInfo extends IUser{
   uid: string;
   userGlobalId: string;
+  email: string;
 }
 
 export interface IUser {

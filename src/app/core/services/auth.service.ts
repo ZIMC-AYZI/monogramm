@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { map, switchMap, take } from 'rxjs/operators';
-import { BehaviorSubject, from, Observable, of } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
+import { BehaviorSubject, from, Observable } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/auth';
 import firebase from 'firebase/app';
 import 'firebase/auth';
@@ -8,6 +8,8 @@ import 'firebase/messaging';
 import 'firebase/database';
 import 'firebase/storage';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { IUserDetail } from '../../interfaces/i-user';
+import UserCredential = firebase.auth.UserCredential;
 
 
 @Injectable({
@@ -26,9 +28,9 @@ export class AuthService {
     this.user.next(this.afAuth.authState);
   }
 
-  loginViaGoogle(): Observable<firebase.auth.UserCredential> {
+  loginViaGoogle(): Observable<IUserDetail> {
     return from(this.afAuth.signInWithPopup(new firebase.auth.GoogleAuthProvider())).pipe(
-      map(({user}): any => {
+      map(({user}: UserCredential): IUserDetail => {
         const currentUid = this.genUserNumber();
         return ({
           info: {
@@ -44,10 +46,10 @@ export class AuthService {
     );
   }
 
-  setUserToFireData(user): Observable<any> {
+  setUserToFireData(user: IUserDetail): Observable<void> {
     return this.fireStore.collection('users').doc(user.info.email).get()
       .pipe(
-        map((res) => {
+        map((res): void => {
           if (!res.exists) {
             this.fireStore.collection('users').doc(user.info.email).set(user);
           }
@@ -55,7 +57,7 @@ export class AuthService {
       );
   }
 
-  getAuthUser$(): Observable<any> {
+  getAuthUser$(): Observable<firebase.User> {
     return this.user$;
   }
 
