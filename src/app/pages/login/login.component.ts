@@ -5,6 +5,8 @@ import { switchMap, takeUntil } from 'rxjs/operators';
 import { NgOnDestroy } from '../../core/services/ng-on-destroy.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { myRoutes } from '../../core/constants/router';
+import { Observable } from 'rxjs';
+import { IUserInfo } from '../../interfaces/i-user';
 
 @Component({
   selector: 'app-login',
@@ -34,12 +36,12 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  login(): void {
+  public login(): void {
     this.authService.loginViaGoogle()
       .pipe(
         takeUntil(this.ngOnDestroy$),
-        switchMap((user: any): any => {
-         return this.authService.setUserToFireData(user);
+        switchMap((user: object): Observable<IUserInfo> => {
+          return this.authService.setUserToFireData(user);
         })
       )
       .subscribe(() => {

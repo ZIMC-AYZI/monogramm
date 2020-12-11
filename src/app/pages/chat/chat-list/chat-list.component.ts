@@ -18,7 +18,6 @@ export class ChatListComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    console.log(this.user);
   }
 
   public showCurrentDialog(): void {
