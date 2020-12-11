@@ -1,15 +1,21 @@
 <div class="container">
   <div class="login-wrapper">
     <mat-card>
-      <form>
+      <form class="form" [formGroup]="registerForm">
         <mat-form-field class="example-full-width">
-          <input matInput placeholder="Email">
+          <input formControlName="email" matInput placeholder="email">
         </mat-form-field>
         <mat-form-field class="example-full-width">
-          <input matInput placeholder="Password">
+          <input formControlName="password" matInput placeholder="password">
         </mat-form-field>
       </form>
       <div class="button-wrapper">
+        <div class="create-new">
+          <span class="create-text">create new</span>
+          <button mat-icon-button aria-label="Example icon-button with a heart icon">
+            <mat-icon>accessibility</mat-icon>
+          </button>
+        </div>
         <button mat-flat-button color="primary"
                 aria-label="Example icon button with a delete icon"
                 (click)="login()">

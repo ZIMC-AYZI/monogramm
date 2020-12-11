@@ -21,7 +21,7 @@ export class AuthService {
 
   constructor(
     private afAuth: AngularFireAuth,
-    private fireStore: AngularFirestore
+    private fireStore: AngularFirestore,
   ) {
     this.user.next(this.afAuth.authState);
   }
@@ -58,53 +58,6 @@ export class AuthService {
   logout(): Observable<void> {
     return from(this.afAuth.signOut());
   }
-
-  // constructor(
-  //   private fireStore: AngularFirestore,
-  // ) { }
-  //
-  // login(): any {
-  //   const provider = new firestore.auth.GoogleAuthProvider();
-  //   provider.addScope('https://www.googleapis.com/auth/userinfo.email');
-  //
-  //   firestore.auth().signInWithPopup(provider)
-  //     .then(result => {
-  //       const user = result.user;
-  //       console.log(user);
-  //       console.log(user.displayName);
-  //       console.log(user.email);
-  //       const currentUid = this.genUserNumber();
-  //
-  //       const setUserToDb$ = this.fireStore.collection('users').doc(user.email).get()
-  //         .pipe(
-  //           take(1),
-  //           map((res) => {
-  //             if (!res.exists) {
-  //               this.fireStore.collection('users').doc(user.email).set({
-  //                 info: {
-  //                   displayName: user.displayName,
-  //                   photoURL: user.photoURL,
-  //                   uid: currentUid,
-  //                   userGlobalId: user.uid
-  //                 },
-  //                 creationTime: Date.now()
-  //               });
-  //             }
-  //           })
-  //         );
-  //       setUserToDb$.subscribe();
-  //     })
-  //     .catch(error => {
-  //       const errorCode = error.code;
-  //       const errorMessage = error.message;
-  //       const email = error.email;
-  //       const credential = error.credential;
-  //       console.log(errorCode);
-  //       console.log(errorMessage);
-  //       console.log(email);
-  //       console.log(credential);
-  //     });
-  // }
 
   private genUserNumber(): string {
     return (Math.floor(Math.random() * Math.floor(200))).toString();

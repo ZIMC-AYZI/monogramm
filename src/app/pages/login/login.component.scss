@@ -1,12 +1,33 @@
 .login-wrapper{
   display: flex;
   justify-content: center;
+  margin-top: 150px;
   .button-wrapper{
     display: flex;
     flex-direction: column;
     justify-content: center;
     & button{
       margin: 5px 0;
+    }
+    .create-new{
+      display: flex;
+      justify-content: flex-end;
+      & button{
+        border: 1px solid #cecece;
+        &:hover{
+          transition: 0.8s;
+          background: #000000;
+          & mat-icon {
+            color: #f1f0f0;
+          }
+        }
+      }
+      .create-text{
+        display: flex;
+        align-items: center;
+        font-size: 15px;
+        padding: 0 5px;
+      }
     }
   }
   & mat-form-field{
