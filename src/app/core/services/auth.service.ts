@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
-import { map, switchMap } from 'rxjs/operators';
-import { BehaviorSubject, from, Observable } from 'rxjs';
+import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
+
+import {map, switchMap} from 'rxjs/operators';
+import { BehaviorSubject, from, Observable } from 'rxjs';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/messaging';
 import 'firebase/database';
 import 'firebase/storage';
-import { AngularFirestore } from '@angular/fire/firestore';
 import { IUserDetail } from '../../interfaces/i-user';
 import UserCredential = firebase.auth.UserCredential;
 

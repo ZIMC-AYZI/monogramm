@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 
 import * as _moment from 'moment';
 import {IUserDetail} from '../../../interfaces/i-user';
@@ -12,6 +12,7 @@ const moment = _moment;
 })
 export class ChatListComponent implements OnInit {
   @Input() user: IUserDetail;
+  @Output() chooseUser: EventEmitter<IUserDetail> = new EventEmitter<IUserDetail>();
 
   public lastMessage = 'Show me your dicinson';
 
@@ -21,7 +22,7 @@ export class ChatListComponent implements OnInit {
   }
 
   public showCurrentDialog(): void {
-    console.log(1);
+    this.chooseUser.emit(this.user);
   }
 
   public trimMessage(str: string): string {

@@ -9,16 +9,18 @@
       </button>
     </div>
     <div *ngFor="let user of users$ | async" class="dialog">
-        <app-chat-list [user]="user"></app-chat-list>
+        <app-chat-list (chooseUser)="showDialogWithUser($event)" [user]="user"></app-chat-list>
     </div>
   </div>
   <div class="right-side">
     <div class="right-side-header">
-      <h3>currentUser.Name</h3>
+      <h3 *ngIf="dialogCompanion">{{ dialogCompanion.info.displayName }}</h3>
       <p>...</p>
     </div>
     <div class="userMessage-wrapper">
-      <app-message *ngFor="let msg of messages$ | async" [msg]="msg"></app-message>
+      <ng-container *ngIf="dialogCompanion">
+        <app-message *ngFor="let msg of messages$ | async" [msg]="msg"></app-message>
+      </ng-container>
     </div>
     <div class="wright-area">
 <!--      <MessageArea @scrollMessages="scrollMessages()" :opponent="currentUser" :authUser="authUser" />-->

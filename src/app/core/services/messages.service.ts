@@ -12,6 +12,10 @@ export class MessagesService {
     private fireStore: AngularFirestore
   ) { }
 
+  startMessaging(collectionPath: string): void {
+    this.fireStore.collection(collectionPath).doc('initialize chat').set({});
+  }
+
   getMessagesList(collectionPath: string): Observable<any> {
     return this.fireStore.collection(collectionPath, ref => ref.orderBy('date'))
       .snapshotChanges()
