@@ -3,7 +3,7 @@ import { Component, Input, OnInit, Self } from '@angular/core';
 import { FirestoreUsersService } from '../../core/services/firestore-users.service';
 import { MessagesService } from '../../core/services/messages.service';
 import { Observable, timer } from 'rxjs';
-import { IUserDetail } from '../../interfaces/i-user';
+import { IUser, IUserDetail } from '../../interfaces/i-user';
 import { IMessage } from '../../interfaces/i-message';
 import { AuthService } from '../../core/services/auth.service';
 import firebase from 'firebase';
@@ -11,6 +11,7 @@ import firestore from 'firebase';
 import { map, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { NgOnDestroy } from '../../core/services/ng-on-destroy.service';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-chat-page',
@@ -24,6 +25,9 @@ export class ChatPageComponent implements OnInit {
   public authUser$: Observable<firebase.User>;
   public dialogCompanion: IUserDetail;
   public userMessage = '';
+  public messageControl = new FormControl('', [
+    Validators.required
+  ]);
 
   constructor(
     @Self() private ngOnDestroy$: NgOnDestroy,
@@ -40,6 +44,7 @@ export class ChatPageComponent implements OnInit {
   }
 
   public showDialogWithUser(user: IUserDetail): void {
+    this.userMessage = '';
     this.dialogCompanion = user;
     this.genDialogUid()
       .pipe(
@@ -106,34 +111,39 @@ export class ChatPageComponent implements OnInit {
   }
 
   public sendMessage(): void {
-    this.genDialogUid()
-      .pipe(
-        takeUntil(this.ngOnDestroy$),
-        switchMap((uid) => {
-          return this.authUser$
-            .pipe(
-              map((user) => {
-                return this.fireStore.collection(uid).doc(this.getRandomUidMessage()).set({
-                  text: this.userMessage,
-                  author: {
-                    displayName: user.displayName,
-                    photoURL: user.photoURL
-                  },
-                  date: Date.now()
-                });
-              })
-            );
-        })
-      ).subscribe(() => {
-      this.userMessage = '';
-      this.scrollMessages();
-    });
+    if (this.messageControl.value) {
+      this.genDialogUid()
+        .pipe(
+          takeUntil(this.ngOnDestroy$),
+          switchMap((uid: any ): any => {
+            return this.authUser$
+              .pipe(
+                map((user: any): any => {
+                  return this.fireStore.collection(uid).doc(this.getRandomUidMessage()).set({
+                    text: this.userMessage,
+                    author: {
+                      displayName: user.displayName,
+                      photoURL: user.photoURL
+                    },
+                    date: Date.now()
+                  });
+                })
+              );
+          })
+        ).subscribe(() => {
+        this.userMessage = '';
+        this.scrollMessages();
+      });
+    }
   }
 
   private getRandomUidMessage(): string {
-    let s = '', abd = 'abcdefghijklmnopqrstuvwxyz0123456789', aL = abd.length;
-    while (s.length < 20)
+    let s = '';
+    const abd = 'abcdefghijklmnopqrstuvwxyz0123456789';
+    const aL = abd.length;
+    while (s.length < 20) {
       s += abd[Math.random() * aL | 0];
+    }
     return s;
   }
 

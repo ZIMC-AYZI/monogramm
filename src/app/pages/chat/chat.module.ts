@@ -9,7 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 const routes: Routes = [
@@ -34,6 +34,7 @@ const routes: Routes = [
     MatFormFieldModule,
     MatInputModule,
     FormsModule,
+    ReactiveFormsModule,
   ],
   exports: [
     ChatPageComponent,

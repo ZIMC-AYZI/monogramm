@@ -13,9 +13,10 @@
       & .mat-card-avatar{
         border-radius: 0;
         & img{
-          height: 60px;
-          width: 60px;
-          border-radius: 20%;
+          height: 50px;
+          width: 50px;
+          border-radius: 25%;
+          border: 1px solid #a214dc;
         }
       }
     }
