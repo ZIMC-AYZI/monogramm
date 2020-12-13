@@ -1,3 +1,23 @@
 .wrap {
   display: flex;
+  .wright-area {
+    .wright-wrapper {
+      display: flex;
+      justify-content: space-around;
+      & mat-form-field{
+        width: 60%;
+        & textarea {
+          resize: none;
+        }
+      }
+      & .mat-card-avatar{
+        border-radius: 0;
+        & img{
+          height: 60px;
+          width: 60px;
+          border-radius: 20%;
+        }
+      }
+    }
+  }
 }

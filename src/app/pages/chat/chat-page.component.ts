@@ -1,4 +1,4 @@
-import {Component, OnInit, Self} from '@angular/core';
+import { Component, Input, OnInit, Self } from '@angular/core';
 
 import { FirestoreUsersService } from '../../core/services/firestore-users.service';
 import { MessagesService } from '../../core/services/messages.service';
@@ -10,6 +10,7 @@ import firebase from 'firebase';
 import firestore from 'firebase';
 import { map, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { NgOnDestroy } from '../../core/services/ng-on-destroy.service';
+import { AngularFirestore } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-chat-page',
@@ -22,18 +23,20 @@ export class ChatPageComponent implements OnInit {
   public messages$: Observable<IMessage[]>;
   public authUser$: Observable<firebase.User>;
   public dialogCompanion: IUserDetail;
+  public userMessage = '';
 
   constructor(
     @Self() private ngOnDestroy$: NgOnDestroy,
     private firestoreUsersService: FirestoreUsersService,
     private messagesService: MessagesService,
-    private authService: AuthService
+    private authService: AuthService,
+    private fireStore: AngularFirestore
   ) {
   }
 
   ngOnInit(): void {
-    this.fetchUsers();
     this.fetchAuthUser();
+    this.fetchUsers();
   }
 
   public showDialogWithUser(user: IUserDetail): void {
@@ -49,7 +52,17 @@ export class ChatPageComponent implements OnInit {
   }
 
   private fetchUsers(): void {
-    this.users$ = this.firestoreUsersService.getUsersList();
+    this.users$ = this.firestoreUsersService.getUsersList()
+      .pipe(
+        switchMap((users: IUserDetail[]): Observable<IUserDetail[]> => {
+          return this.authUser$
+            .pipe(
+              map((user: firestore.User): IUserDetail[] => {
+                return users.filter(el => el.info.uid !== user.uid);
+              })
+            );
+        })
+      );
   }
 
   private fetchMessages(collectionPath: string): void {
@@ -61,7 +74,7 @@ export class ChatPageComponent implements OnInit {
     this.authUser$ = this.authService.getAuthUser$()
       .pipe(
         switchMap((user: firestore.User): Observable<firestore.User> => {
-          return this.users$
+          return this.firestoreUsersService.getUsersList()
             .pipe(
               map((users: IUserDetail[]): firestore.User => {
                 let result = users.map((userFromDb: IUserDetail): firestore.User => {
@@ -90,6 +103,38 @@ export class ChatPageComponent implements OnInit {
           return (+user.uid + +this.dialogCompanion.info.uid).toString();
         })
       );
+  }
+
+  public sendMessage(): void {
+    this.genDialogUid()
+      .pipe(
+        takeUntil(this.ngOnDestroy$),
+        switchMap((uid) => {
+          return this.authUser$
+            .pipe(
+              map((user) => {
+                return this.fireStore.collection(uid).doc(this.getRandomUidMessage()).set({
+                  text: this.userMessage,
+                  author: {
+                    displayName: user.displayName,
+                    photoURL: user.photoURL
+                  },
+                  date: Date.now()
+                });
+              })
+            );
+        })
+      ).subscribe(() => {
+      this.userMessage = '';
+      this.scrollMessages();
+    });
+  }
+
+  private getRandomUidMessage(): string {
+    let s = '', abd = 'abcdefghijklmnopqrstuvwxyz0123456789', aL = abd.length;
+    while (s.length < 20)
+      s += abd[Math.random() * aL | 0];
+    return s;
   }
 
   private scrollMessages(): void {

@@ -1,15 +1,15 @@
 <div class="wrap">
   <div class="dialogs-wrapper">
     <div class="dialogs-header">
-        <h3 *ngIf="authUser$ | async as authUser">
-          {{ authUser.displayName }}
-        </h3>
+      <h3 *ngIf="authUser$ | async as authUser">
+        {{ authUser.displayName }}
+      </h3>
       <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
         <mat-icon>create</mat-icon>
       </button>
     </div>
     <div *ngFor="let user of users$ | async" class="dialog">
-        <app-chat-list (chooseUser)="showDialogWithUser($event)" [user]="user"></app-chat-list>
+      <app-chat-list (chooseUser)="showDialogWithUser($event)" [user]="user"></app-chat-list>
     </div>
   </div>
   <div class="right-side">
@@ -23,7 +23,20 @@
       </ng-container>
     </div>
     <div class="wright-area">
-<!--      <MessageArea @scrollMessages="scrollMessages()" :opponent="currentUser" :authUser="authUser" />-->
+      <div class="wright-wrapper">
+        <div mat-card-avatar
+             class="example-header-image"
+             *ngIf="authUser$ | async as authUser">
+          <img [src]="authUser.photoURL" alt="Photo of a Shiba Inu">
+        </div>
+        <mat-form-field>
+          <textarea
+            matInput
+            [(ngModel)]="userMessage"
+            (keydown.enter)="sendMessage()"
+            placeholder="Wright a message"></textarea>
+        </mat-form-field>
+      </div>
     </div>
   </div>
 </div>
