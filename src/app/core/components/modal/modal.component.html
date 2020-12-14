@@ -1,0 +1,50 @@
+
+<ng-container [ngSwitch]="data">
+  <ng-template ngSwitchCase="contacts">
+    <h1 mat-dialog-title>CONTACTS</h1>
+    <div mat-dialog-content>{{ data }}</div>
+    <div mat-dialog-actions>
+      <button mat-button mat-dialog-close>Close</button>
+    </div>
+  </ng-template>
+
+  <ng-template ngSwitchCase="create new group">
+    <h1 mat-dialog-title>create new group</h1>
+    <div mat-dialog-content>{{ data }}</div>
+    <div mat-dialog-actions>
+      <button mat-button mat-dialog-close>Close</button>
+    </div>
+  </ng-template>
+
+  <ng-template ngSwitchCase="info">
+    <h1 mat-dialog-title>info</h1>
+    <div mat-dialog-content>{{ data }}</div>
+    <div mat-dialog-actions>
+      <button mat-button mat-dialog-close>Close</button>
+    </div>
+  </ng-template>
+
+  <ng-template ngSwitchCase="settings">
+    <h1 mat-dialog-title>settings</h1>
+    <div mat-dialog-content>{{ data }}</div>
+    <div mat-dialog-actions>
+      <button mat-button mat-dialog-close>Close</button>
+    </div>
+  </ng-template>
+
+  <ng-template ngSwitchCase="log out">
+    <h1 mat-dialog-title>log out</h1>
+    <div mat-dialog-content>{{ data }}</div>
+    <div mat-dialog-actions>
+      <button mat-button mat-dialog-close>Close</button>
+    </div>
+  </ng-template>
+
+  <ng-template ngSwitchDefault>
+    <h1 mat-dialog-title>404 goodbye</h1>
+    <div mat-dialog-content></div>
+    <div mat-dialog-actions>
+      <button mat-button mat-dialog-close>Close</button>
+    </div>
+  </ng-template>
+</ng-container>

@@ -1,0 +1,16 @@
+<button
+  mat-icon-button
+  class="example-icon"
+  aria-label="Example icon-button with menu icon"
+  [matMenuTriggerFor]="menu">
+  <mat-icon>menu</mat-icon>
+</button>
+<mat-menu #menu="matMenu">
+  <button *ngFor="let btnItem of burgerSettings"
+          (click)="btnOnClick(btnItem)"
+          mat-menu-item>
+    <mat-icon>{{ btnItem.icon }}</mat-icon>
+    <span>{{ btnItem.title }}</span>
+  </button>
+
+</mat-menu>

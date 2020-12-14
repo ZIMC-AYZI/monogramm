@@ -115,18 +115,11 @@ export class ChatPageComponent implements OnInit {
       this.genDialogUid()
         .pipe(
           takeUntil(this.ngOnDestroy$),
-          switchMap((uid: any ): any => {
-            return this.authUser$
+          tap((uid: string ): void => {
+            this.authUser$
               .pipe(
-                map((user: any): any => {
-                  return this.fireStore.collection(uid).doc(this.getRandomUidMessage()).set({
-                    text: this.userMessage,
-                    author: {
-                      displayName: user.displayName,
-                      photoURL: user.photoURL
-                    },
-                    date: Date.now()
-                  });
+                tap((user: firestore.User): void  => {
+                  this.messagesService.setMessageToDb(this.userMessage, uid, user)
                 })
               );
           })
@@ -135,16 +128,6 @@ export class ChatPageComponent implements OnInit {
         this.scrollMessages();
       });
     }
-  }
-
-  private getRandomUidMessage(): string {
-    let s = '';
-    const abd = 'abcdefghijklmnopqrstuvwxyz0123456789';
-    const aL = abd.length;
-    while (s.length < 20) {
-      s += abd[Math.random() * aL | 0];
-    }
-    return s;
   }
 
   private scrollMessages(): void {
