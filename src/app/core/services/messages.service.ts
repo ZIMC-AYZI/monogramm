@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import {delay, map, take, takeUntil, tap} from 'rxjs/operators';
+import {Observable, of, timer} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +25,17 @@ export class MessagesService {
         photoURL: user.photoURL
       },
       date: Date.now()
-    });
+    })
+      .then(() => {
+        of(null)
+          .pipe(
+            take(1),
+            delay(0),
+            tap(() => {
+              this.scrollMessages();
+            })
+          ).subscribe();
+      });
   }
 
   public getMessagesList(collectionPath: string): Observable<any> {
@@ -33,10 +43,18 @@ export class MessagesService {
       .valueChanges()
       .pipe(
         map((snaps) => {
-            console.log(snaps);
             return snaps;
+        }),
+        delay(0),
+        tap(() => {
+          this.scrollMessages();
         })
       );
+  }
+
+  private scrollMessages(): void {
+    const box = document.querySelector('.userMessage-wrapper');
+    box.scrollTop = box.scrollHeight;
   }
 
   private getRandomUidMessage(): string {

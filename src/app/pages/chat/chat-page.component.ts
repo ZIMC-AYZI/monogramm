@@ -73,7 +73,6 @@ export class ChatPageComponent implements OnInit {
           })
         ).subscribe(() => {
         this.userMessage = '';
-        this.scrollMessages();
       });
     }
   }
@@ -94,7 +93,6 @@ export class ChatPageComponent implements OnInit {
 
   private fetchMessages(collectionPath: string): void {
     this.messages$ = this.messagesService.getMessagesList(collectionPath);
-    this.scrollMessages();
   }
 
   private fetchAuthUser(): void {
@@ -130,16 +128,5 @@ export class ChatPageComponent implements OnInit {
           return (+user.uid + +this.dialogCompanion.info.uid).toString();
         })
       );
-  }
-
-  private scrollMessages(): void {
-    timer(1000)
-      .pipe(
-        takeUntil(this.ngOnDestroy$),
-        tap(() => {
-          const box = document.querySelector('.userMessage-wrapper');
-          box.scrollTop = box.scrollHeight;
-        })
-      ).subscribe();
   }
 }
