@@ -1,16 +1,15 @@
-import { Component, Input, OnInit, Self } from '@angular/core';
+import { Component, OnInit, Self } from '@angular/core';
 
 import { FirestoreUsersService } from '../../core/services/firestore-users.service';
 import { MessagesService } from '../../core/services/messages.service';
 import { Observable, timer } from 'rxjs';
-import { IUser, IUserDetail } from '../../interfaces/i-user';
+import { IUserDetail } from '../../interfaces/i-user';
 import { IMessage } from '../../interfaces/i-message';
 import { AuthService } from '../../core/services/auth.service';
 import firebase from 'firebase';
 import firestore from 'firebase';
 import { map, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { NgOnDestroy } from '../../core/services/ng-on-destroy.service';
-import { AngularFirestore } from '@angular/fire/firestore';
 import { FormControl, Validators } from '@angular/forms';
 
 @Component({
@@ -33,8 +32,7 @@ export class ChatPageComponent implements OnInit {
     @Self() private ngOnDestroy$: NgOnDestroy,
     private firestoreUsersService: FirestoreUsersService,
     private messagesService: MessagesService,
-    private authService: AuthService,
-    private fireStore: AngularFirestore
+    private authService: AuthService
   ) {
   }
 
@@ -115,11 +113,11 @@ export class ChatPageComponent implements OnInit {
       this.genDialogUid()
         .pipe(
           takeUntil(this.ngOnDestroy$),
-          tap((uid: string ): void => {
-            this.authUser$
+          switchMap((uid: string ): Observable<firebase.User> => {
+            return this.authUser$
               .pipe(
                 tap((user: firestore.User): void  => {
-                  this.messagesService.setMessageToDb(this.userMessage, uid, user)
+                  this.messagesService.setMessageToDb(this.userMessage, uid, user);
                 })
               );
           })
