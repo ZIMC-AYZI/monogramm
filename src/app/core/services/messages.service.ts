@@ -17,8 +17,8 @@ export class MessagesService {
     this.fireStore.collection(collectionPath).doc('initialize chat').set({});
   }
 
-  public setMessageToDb(message, uid, user): void {
-    this.fireStore.collection(uid).doc(this.getRandomUidMessage()).set({
+  public setMessageToDb(message, collectionPath, user): void {
+    this.fireStore.collection(collectionPath).doc(this.getRandomUidMessage()).set({
       text: message,
       author: {
         displayName: user.displayName,
@@ -30,16 +30,12 @@ export class MessagesService {
 
   public getMessagesList(collectionPath: string): Observable<any> {
     return this.fireStore.collection(collectionPath, ref => ref.orderBy('date'))
-      .snapshotChanges()
+      .valueChanges()
       .pipe(
-        map((snaps) =>
-          snaps.map((snap) => {
-            return ({
-              //   id: snap.payload.doc.id,
-              ...(snap.payload.doc.data() as {}),
-            });
-          }),
-        )
+        map((snaps) => {
+            console.log(snaps);
+            return snaps;
+        })
       );
   }
 

@@ -19,7 +19,7 @@
     </div>
     <div class="userMessage-wrapper">
       <ng-container *ngIf="dialogCompanion">
-        <app-message *ngFor="let msg of messages$ | async" [msg]="msg"
+        <app-message *ngFor="let msg of messages$ | async; trackBy: trackByFn" [msg]="msg"
         [authUser]="authUser$ | async"
         ></app-message>
       </ng-container>

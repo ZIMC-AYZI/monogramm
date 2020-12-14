@@ -14,16 +14,9 @@ export class FirestoreUsersService {
 
   getUsersList(): Observable<any> {
     return this.fireStore.collection('users')
-      .snapshotChanges()
+      .valueChanges()
       .pipe(
-        map((snaps) =>
-          snaps.map((snap) => {
-            return({
-            //   id: snap.payload.doc.id,
-              ...(snap.payload.doc.data() as {}),
-            });
-          }),
-        )
+        map((snaps) => snaps)
       );
   }
 }

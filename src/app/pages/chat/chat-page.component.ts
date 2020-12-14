@@ -54,6 +54,30 @@ export class ChatPageComponent implements OnInit {
       ).subscribe();
   }
 
+  public trackByFn(index, item): void {
+    return item.date;
+  }
+
+  public sendMessage(): void {
+    if (this.messageControl.value) {
+      this.genDialogUid()
+        .pipe(
+          takeUntil(this.ngOnDestroy$),
+          switchMap((uid: string ): Observable<firebase.User> => {
+            return this.authUser$
+              .pipe(
+                tap((user: firestore.User): void  => {
+                  this.messagesService.setMessageToDb(this.userMessage, uid, user);
+                })
+              );
+          })
+        ).subscribe(() => {
+        this.userMessage = '';
+        this.scrollMessages();
+      });
+    }
+  }
+
   private fetchUsers(): void {
     this.users$ = this.firestoreUsersService.getUsersList()
       .pipe(
@@ -106,26 +130,6 @@ export class ChatPageComponent implements OnInit {
           return (+user.uid + +this.dialogCompanion.info.uid).toString();
         })
       );
-  }
-
-  public sendMessage(): void {
-    if (this.messageControl.value) {
-      this.genDialogUid()
-        .pipe(
-          takeUntil(this.ngOnDestroy$),
-          switchMap((uid: string ): Observable<firebase.User> => {
-            return this.authUser$
-              .pipe(
-                tap((user: firestore.User): void  => {
-                  this.messagesService.setMessageToDb(this.userMessage, uid, user);
-                })
-              );
-          })
-        ).subscribe(() => {
-        this.userMessage = '';
-        this.scrollMessages();
-      });
-    }
   }
 
   private scrollMessages(): void {
