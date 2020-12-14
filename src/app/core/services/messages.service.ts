@@ -44,12 +44,13 @@ export class MessagesService {
   }
 
   private getRandomUidMessage(): string {
-    let s = '';
-    const abd = 'abcdefghijklmnopqrstuvwxyz0123456789';
-    const aL = abd.length;
-    while (s.length < 20) {
-      s += abd[Math.random() * aL];
+    let text = '';
+    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+    for (let i = 0; i < 20; i++) {
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
     }
-    return s;
+
+    return text;
   }
 }
