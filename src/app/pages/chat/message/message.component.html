@@ -2,8 +2,8 @@
   <div class="date-message">
     <p>{{ setDataFormat() }}</p>
   </div>
-<!--  [class]="[authUser.displayName === msg.author.displayName ? 'my-message' : null]"-->
-  <div class="content">
+  <div *ngIf="authUser" class="content"
+       [class]="[authUser.displayName === msg.author.displayName ? 'my-message' : null]">
     <div class="image">
       <img [src]="msg.author.photoURL" alt="">
     </div>

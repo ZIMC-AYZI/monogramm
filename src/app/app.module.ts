@@ -12,6 +12,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
+import { BurgerMenuComponent } from './core/components/burger-menu/burger-menu.component';
+import { _MatMenuDirectivesModule, MatMenuModule } from '@angular/material/menu';
+import { ModalComponent } from './core/components/modal/modal.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 
 
@@ -20,6 +24,8 @@ import { MatButtonModule } from '@angular/material/button';
     AppComponent,
     HeaderComponent,
     FooterComponent,
+    BurgerMenuComponent,
+    ModalComponent
   ],
   imports: [
     BrowserModule,
@@ -30,6 +36,9 @@ import { MatButtonModule } from '@angular/material/button';
     MatIconModule,
     MatToolbarModule,
     MatButtonModule,
+    _MatMenuDirectivesModule,
+    MatMenuModule,
+    MatDialogModule,
   ],
   providers: [],
   exports: [],

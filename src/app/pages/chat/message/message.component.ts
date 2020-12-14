@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 
 import { IMessage } from '../../../interfaces/i-message';
 import * as _moment from 'moment';
+import firestore from 'firebase';
 
 const moment = _moment;
 
@@ -12,6 +13,7 @@ const moment = _moment;
 })
 export class MessageComponent implements OnInit {
   @Input() msg: IMessage;
+  @Input() authUser: firestore.User;
   constructor() { }
 
   ngOnInit(): void {

@@ -14,7 +14,7 @@ const routes: Routes = [
     path: myRoutes.chatPage.fullPath,
     loadChildren: () => import('../app/pages/chat/chat.module').then(m =>
       m.ChatModule),
-    canActivate: [AuthGuard]
+    // canActivate: [AuthGuard]
   },
   {path: '**', redirectTo: myRoutes.logIn.fullPath, pathMatch: 'full'}
 ];
