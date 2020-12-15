@@ -25,7 +25,8 @@ export class ChatPageComponent implements OnInit {
   public dialogCompanion: IUserDetail;
   public userMessage = '';
   public messageControl = new FormControl('', [
-    Validators.required
+    Validators.required,
+    Validators.pattern('/^[^\\s]+$/')
   ]);
 
   constructor(
@@ -59,7 +60,7 @@ export class ChatPageComponent implements OnInit {
   }
 
   public sendMessage(): void {
-    if (this.messageControl.value) {
+    if (this.messageControl.valid) {
       this.genDialogUid()
         .pipe(
           takeUntil(this.ngOnDestroy$),
