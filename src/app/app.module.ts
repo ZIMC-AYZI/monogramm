@@ -16,6 +16,11 @@ import { BurgerMenuComponent } from './core/components/burger-menu/burger-menu.c
 import { _MatMenuDirectivesModule, MatMenuModule } from '@angular/material/menu';
 import { ModalComponent } from './core/components/modal/modal.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatInputModule } from '@angular/material/input';
 
 
 
@@ -39,6 +44,12 @@ import { MatDialogModule } from '@angular/material/dialog';
     _MatMenuDirectivesModule,
     MatMenuModule,
     MatDialogModule,
+    MatCardModule,
+    MatInputModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    FormsModule,
+    MatAutocompleteModule,
   ],
   providers: [],
   exports: [],

@@ -1,18 +1,87 @@
-
 <ng-container [ngSwitch]="data">
+
   <ng-template ngSwitchCase="contacts">
-    <h1 mat-dialog-title>CONTACTS</h1>
-    <div mat-dialog-content>{{ data }}</div>
-    <div mat-dialog-actions>
-      <button mat-button mat-dialog-close>Close</button>
+
+    <div class="contacts-wrapper">
+      <div class="search-wrapper">
+        <h1 mat-dialog-title>{{ data }}</h1>
+        <form class="example-form">
+          <mat-form-field class="example-full-width">
+            <input type="text"
+                   placeholder="Pick one"
+                   aria-label="Number"
+                   matInput
+                   [formControl]="myControl"
+                   [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete">
+            </mat-autocomplete>
+          </mat-form-field>
+        </form>
+      </div>
+      <div mat-dialog-content>
+        <div class="el" *ngFor="let user of fakeArray">
+          <mat-card class="example-card">
+            <mat-card-header>
+              <div mat-card-avatar class="example-header-image">
+                <img [src]="user.img" alt="">
+              </div>
+            </mat-card-header>
+            <div class="content-wrapper">
+              <mat-card-title>{{ user.name }}</mat-card-title>
+              <mat-card-subtitle>
+                <p>{{ user.online }}</p>
+              </mat-card-subtitle>
+            </div>
+          </mat-card>
+        </div>
+      </div>
+      <div mat-dialog-actions>
+        <button mat-button mat-dialog-close>Close</button>
+      </div>
     </div>
+
   </ng-template>
 
   <ng-template ngSwitchCase="create new group">
-    <h1 mat-dialog-title>create new group</h1>
-    <div mat-dialog-content>{{ data }}</div>
-    <div mat-dialog-actions>
-      <button mat-button mat-dialog-close>Close</button>
+    <div class="group-wrapper">
+      <div class="search-wrapper">
+        <h1 mat-dialog-title>{{ data }}</h1>
+        <form class="example-form">
+          <mat-form-field class="example-full-width">
+            <input type="text"
+                   placeholder="Pick one"
+                   aria-label="Number"
+                   matInput
+                   [formControl]="myControl"
+                   [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete">
+            </mat-autocomplete>
+          </mat-form-field>
+        </form>
+      </div>
+      <div class="el" *ngFor="let user of fakeArray">
+        <mat-card class="example-card">
+          <mat-card-header>
+            <div mat-card-avatar class="example-header-image">
+              <img [src]="user.img" alt="">
+            </div>
+          </mat-card-header>
+          <div class="content-wrapper">
+            <mat-card-title>{{ user.name }}</mat-card-title>
+            <mat-card-subtitle>
+              <p>{{ user.online }}</p>
+            </mat-card-subtitle>
+          </div>
+        </mat-card>
+      </div>
+      <div class="btn-wrapper">
+        <div mat-dialog-actions>
+          <button mat-button mat-dialog-close>Close</button>
+        </div>
+        <div mat-dialog-actions>
+          <button mat-button mat-dialog-close>Next</button>
+        </div>
+      </div>
     </div>
   </ng-template>
 
