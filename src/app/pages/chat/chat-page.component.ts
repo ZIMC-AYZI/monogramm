@@ -1,7 +1,6 @@
 import {
-  AfterViewInit,
   Component,
-  ElementRef, HostListener, Inject,
+  ElementRef, HostListener,
   OnInit,
   QueryList,
   Self,
@@ -17,10 +16,9 @@ import { IMessage } from '../../interfaces/i-message';
 import { AuthService } from '../../core/services/auth.service';
 import firebase from 'firebase';
 import firestore from 'firebase';
-import { map, mergeMap, switchMap, take, takeUntil, tap } from 'rxjs/operators';
+import { map, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 import { NgOnDestroy } from '../../core/services/ng-on-destroy.service';
 import { FormControl, Validators } from '@angular/forms';
-import { log } from 'util';
 
 @Component({
   selector: 'app-chat-page',
@@ -28,9 +26,10 @@ import { log } from 'util';
   styleUrls: ['./chat-page.component.scss'],
   providers: [NgOnDestroy]
 })
-export class ChatPageComponent implements OnInit, AfterViewInit {
+export class ChatPageComponent implements OnInit {
   @ViewChild('scrollFrame', {static: false}) scrollFrame: ElementRef;
   @ViewChildren('item') itemElements: QueryList<any>;
+
   public messageSub: BehaviorSubject<Observable<IMessage[]>> = new BehaviorSubject<Observable<IMessage[]>>(null);
   public users$: Observable<IUserDetail[]>;
   public messages$ = this.messageSub
@@ -76,13 +75,18 @@ export class ChatPageComponent implements OnInit, AfterViewInit {
     this.fetchUsers();
   }
 
-  ngAfterViewInit(): void {
+  private scrollToBottom(time): void {
     this.scrollContainer = this.scrollFrame.nativeElement;
-    this.itemElements.changes
+    timer(time)
       .pipe(
-        takeUntil(this.ngOnDestroy$)
-      )
-      .subscribe(() => this.onItemElementsChanged());
+        take(1)
+      ).subscribe(() => {
+      this.scrollContainer.scroll({
+        top: this.scrollContainer.scrollHeight,
+        left: 0,
+        behavior: 'smooth'
+      });
+    });
   }
 
   public showDialogWithUser(user: IUserDetail): void {
@@ -116,25 +120,10 @@ export class ChatPageComponent implements OnInit, AfterViewInit {
               );
           })
         ).subscribe(() => {
+        console.log(this.userMessage);
         this.userMessage = '';
       });
-  }
-
-  private onItemElementsChanged(): void {
-    this.scrollToBottom();
-  }
-
-  private scrollToBottom(): void {
-    timer(1000)
-      .pipe(
-        take(1)
-      ).subscribe(() => {
-      this.scrollContainer.scroll({
-        top: this.scrollContainer.scrollHeight,
-        left: 0,
-        behavior: 'smooth'
-      });
-    });
+      this.scrollToBottom(0);
   }
 
   private fetchUsers(): void {
@@ -153,6 +142,7 @@ export class ChatPageComponent implements OnInit, AfterViewInit {
 
   private fetchMessages(collectionPath: string): void {
     this.messageSub.next(this.messagesService.getMessagesList(collectionPath, this.basicSize));
+    this.scrollToBottom(400);
   }
 
   private fetchAuthUser(): void {
