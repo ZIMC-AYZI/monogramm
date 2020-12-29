@@ -85,23 +85,6 @@ export class ChatPageComponent implements OnInit, AfterViewInit {
       .subscribe(() => this.onItemElementsChanged());
   }
 
-  private onItemElementsChanged(): void {
-    this.scrollToBottom();
-  }
-
-  private scrollToBottom(): void {
-    timer(1000)
-      .pipe(
-        take(1)
-      ).subscribe(() => {
-      this.scrollContainer.scroll({
-        top: this.scrollContainer.scrollHeight,
-        left: 0,
-        behavior: 'smooth'
-      });
-    });
-  }
-
   public showDialogWithUser(user: IUserDetail): void {
     this.basicSize = 10;
     this.userMessage = '';
@@ -133,9 +116,25 @@ export class ChatPageComponent implements OnInit, AfterViewInit {
               );
           })
         ).subscribe(() => {
-        console.log(this.userMessage);
         this.userMessage = '';
       });
+  }
+
+  private onItemElementsChanged(): void {
+    this.scrollToBottom();
+  }
+
+  private scrollToBottom(): void {
+    timer(1000)
+      .pipe(
+        take(1)
+      ).subscribe(() => {
+      this.scrollContainer.scroll({
+        top: this.scrollContainer.scrollHeight,
+        left: 0,
+        behavior: 'smooth'
+      });
+    });
   }
 
   private fetchUsers(): void {
