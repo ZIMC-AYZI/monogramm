@@ -18,7 +18,7 @@ import firebase from 'firebase';
 import firestore from 'firebase';
 import { map, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 import { NgOnDestroy } from '../../core/services/ng-on-destroy.service';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-chat-page',
@@ -38,10 +38,8 @@ export class ChatPageComponent implements OnInit {
   public authUser$: Observable<firebase.User>;
   public dialogCompanion: IUserDetail;
   public userMessage = '';
-  public messageControl = new FormControl('', [
-    Validators.required,
-    Validators.pattern('/^[^\\s]+$/')
-  ]);
+  public currentForm = new FormGroup({});
+  public messageControl: FormControl;
   public basicSize = 10;
 
   private scrollContainer: any;
@@ -54,7 +52,6 @@ export class ChatPageComponent implements OnInit {
         .pipe(
           takeUntil(this.ngOnDestroy$),
           tap((collectionPath: string): void => {
-            console.log(collectionPath);
             this.messageSub.next(this.messagesService.getMessagesList(collectionPath, this.basicSize));
           }
           )
@@ -73,6 +70,16 @@ export class ChatPageComponent implements OnInit {
   ngOnInit(): void {
     this.fetchAuthUser();
     this.fetchUsers();
+    this.initForm();
+  }
+
+  public initForm(): void {
+    this.messageControl = new FormControl('', [
+      Validators.required,
+      Validators.pattern('')
+    ]);
+    this.currentForm.addControl('message-control', this.messageControl);
+
   }
 
   private scrollToBottom(time): void {
