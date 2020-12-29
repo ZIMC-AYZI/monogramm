@@ -103,8 +103,9 @@
 
   <ng-template ngSwitchCase="log out">
     <h1 mat-dialog-title>log out</h1>
-    <div mat-dialog-content>{{ data }}</div>
+    <div mat-dialog-content>Are you sure?</div>
     <div mat-dialog-actions>
+      <button mat-button mat-dialog-close class="mat-primary" (click)="logOut()">LogOut</button>
       <button mat-button mat-dialog-close>Close</button>
     </div>
   </ng-template>

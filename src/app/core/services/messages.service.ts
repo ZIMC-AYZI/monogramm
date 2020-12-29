@@ -33,7 +33,6 @@ export class MessagesService {
       .valueChanges()
       .pipe(
         map((snaps) => {
-            console.log(snaps);
             return snaps;
         })
       );

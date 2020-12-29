@@ -2,7 +2,10 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormControl, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
+import { map, startWith, take } from 'rxjs/operators';
+import { AuthService } from '../../services/auth.service';
+import { myRoutes } from '../../constants/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-modal',
@@ -35,11 +38,22 @@ export class ModalComponent implements OnInit {
   ];
   constructor(
     public dialogRef: MatDialogRef<ModalComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private authService: AuthService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
     console.log(this.data);
+  }
+
+  public logOut(): void {
+    this.authService.logout()
+      .pipe(
+        take(1)
+      ).subscribe( () =>
+      this.router.navigate([myRoutes.logIn.routerPath])
+    );
   }
 
 }

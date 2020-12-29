@@ -60,7 +60,6 @@ export class ChatPageComponent implements OnInit {
   }
 
   public sendMessage(): void {
-    if (this.messageControl.valid) {
       this.genDialogUid()
         .pipe(
           takeUntil(this.ngOnDestroy$),
@@ -73,10 +72,10 @@ export class ChatPageComponent implements OnInit {
               );
           })
         ).subscribe(() => {
+        console.log(this.userMessage);
         this.userMessage = '';
         this.scrollMessages();
       });
-    }
   }
 
   private fetchUsers(): void {

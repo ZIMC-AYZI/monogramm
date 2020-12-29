@@ -1,4 +1,4 @@
-<button
+<button *ngIf="isAuthUser | async"
   mat-icon-button
   class="example-icon"
   aria-label="Example icon-button with menu icon"

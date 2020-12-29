@@ -4,6 +4,9 @@ import { BURGER_MENU } from '../../constants/burger-menu';
 import { IBurgerMenuItem } from '../../../interfaces/i-burger-menu';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ModalComponent } from '../modal/modal.component';
+import { AuthService } from '../../services/auth.service';
+import { Observable } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-burger-menu',
@@ -13,13 +16,16 @@ import { ModalComponent } from '../modal/modal.component';
 export class BurgerMenuComponent implements OnInit {
   @ViewChild(MatMenuTrigger) trigger: MatMenuTrigger;
   public burgerSettings: IBurgerMenuItem[] = BURGER_MENU;
+  public isAuthUser: Observable<any>;
 
   constructor(
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    public authService: AuthService
   ) {
   }
 
   ngOnInit(): void {
+    this.isAuthUser = this.authService.getAuthUser$();
   }
 
   public btnOnClick(item: IBurgerMenuItem): void {

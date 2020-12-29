@@ -62,7 +62,7 @@ export class AuthService {
     return this.user$;
   }
 
-  logout(): Observable<void> {
+  public logout(): Observable<void> {
     return from(this.afAuth.signOut());
   }
 
