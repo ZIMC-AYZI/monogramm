@@ -5,6 +5,8 @@
   margin: 2px 0;
   cursor: pointer;
   transition: 0.8s;
+  background: #292a38;
+  box-shadow: -3px -3px 7px 0px rgb(4 14 62 / 20%);
   & .mat-card-header{
     display: flex;
     justify-content: space-between;
@@ -17,9 +19,12 @@
       }
     }
   }
+  .mat-card-header,.mat-card-title, .mat-card-content, .mat-card-subtitle{
+    color: #b5bdcb;
+  }
   &:hover{
     transition: 0.8s;
-    background: rgba(103, 58, 183, 0.6);
+    background: #353948;
     .mat-card-header,.mat-card-title, .mat-card-content, .mat-card-subtitle{
       transition: 0.8s;
       color: #f1f0f0;

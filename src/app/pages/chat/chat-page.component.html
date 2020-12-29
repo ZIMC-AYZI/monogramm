@@ -1,7 +1,7 @@
 <div class="wrap">
   <div class="dialogs-wrapper">
     <div class="dialogs-header">
-      <h3 *ngIf="authUser$ | async as authUser">
+      <h3 class="name-user" *ngIf="authUser$ | async as authUser">
         {{ authUser.displayName }}
       </h3>
       <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
@@ -12,9 +12,9 @@
       <app-chat-list (chooseUser)="showDialogWithUser($event)" [user]="user"></app-chat-list>
     </div>
   </div>
-  <div class="right-side">
+  <div class="right-side" *ngIf="dialogCompanion">
     <div class="right-side-header">
-      <h3 *ngIf="dialogCompanion">{{ dialogCompanion.info.displayName }}</h3>
+      <h3 class="name-user">{{ dialogCompanion.info.displayName }}</h3>
       <p>...</p>
     </div>
     <div class="userMessage-wrapper"#scrollFrame (scroll)="onScroll($event)">
