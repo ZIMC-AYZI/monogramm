@@ -1,4 +1,13 @@
-import { Component, OnInit, Self } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnInit,
+  QueryList,
+  Self,
+  ViewChild,
+  ViewChildren
+} from '@angular/core';
 
 import { FirestoreUsersService } from '../../core/services/firestore-users.service';
 import { MessagesService } from '../../core/services/messages.service';
@@ -8,7 +17,7 @@ import { IMessage } from '../../interfaces/i-message';
 import { AuthService } from '../../core/services/auth.service';
 import firebase from 'firebase';
 import firestore from 'firebase';
-import { map, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { map, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 import { NgOnDestroy } from '../../core/services/ng-on-destroy.service';
 import { FormControl, Validators } from '@angular/forms';
 
@@ -18,7 +27,11 @@ import { FormControl, Validators } from '@angular/forms';
   styleUrls: ['./chat-page.component.scss'],
   providers: [NgOnDestroy]
 })
-export class ChatPageComponent implements OnInit {
+export class ChatPageComponent implements OnInit, AfterViewInit {
+  @ViewChild('scrollFrame', {static: false}) scrollFrame: ElementRef;
+  @ViewChildren('item') itemElements: QueryList<any>;
+  private scrollContainer: any;
+
   public users$: Observable<IUserDetail[]>;
   public messages$: Observable<IMessage[]>;
   public authUser$: Observable<firebase.User>;
@@ -33,13 +46,39 @@ export class ChatPageComponent implements OnInit {
     @Self() private ngOnDestroy$: NgOnDestroy,
     private firestoreUsersService: FirestoreUsersService,
     private messagesService: MessagesService,
-    private authService: AuthService
+    private authService: AuthService,
   ) {
   }
 
   ngOnInit(): void {
     this.fetchAuthUser();
     this.fetchUsers();
+  }
+
+  ngAfterViewInit(): void {
+    this.scrollContainer = this.scrollFrame.nativeElement;
+    this.itemElements.changes
+      .pipe(
+        takeUntil(this.ngOnDestroy$)
+      )
+      .subscribe(() => this.onItemElementsChanged());
+  }
+
+  private onItemElementsChanged(): void {
+    this.scrollToBottom();
+  }
+
+  private scrollToBottom(): void {
+    timer(100)
+      .pipe(
+        take(1)
+      ).subscribe(() => {
+      this.scrollContainer.scroll({
+        top: this.scrollContainer.scrollHeight,
+        left: 0,
+        behavior: 'smooth'
+      });
+    });
   }
 
   public showDialogWithUser(user: IUserDetail): void {
@@ -74,7 +113,6 @@ export class ChatPageComponent implements OnInit {
         ).subscribe(() => {
         console.log(this.userMessage);
         this.userMessage = '';
-        this.scrollMessages();
       });
   }
 
@@ -94,7 +132,6 @@ export class ChatPageComponent implements OnInit {
 
   private fetchMessages(collectionPath: string): void {
     this.messages$ = this.messagesService.getMessagesList(collectionPath);
-    this.scrollMessages();
   }
 
   private fetchAuthUser(): void {
@@ -130,16 +167,5 @@ export class ChatPageComponent implements OnInit {
           return (+user.uid + +this.dialogCompanion.info.uid).toString();
         })
       );
-  }
-
-  private scrollMessages(): void {
-    timer(1000)
-      .pipe(
-        takeUntil(this.ngOnDestroy$),
-        tap(() => {
-          const box = document.querySelector('.userMessage-wrapper');
-          box.scrollTop = box.scrollHeight;
-        })
-      ).subscribe();
   }
 }

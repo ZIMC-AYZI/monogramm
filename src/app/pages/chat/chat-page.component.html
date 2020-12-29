@@ -17,9 +17,10 @@
       <h3 *ngIf="dialogCompanion">{{ dialogCompanion.info.displayName }}</h3>
       <p>...</p>
     </div>
-    <div class="userMessage-wrapper">
+    <div class="userMessage-wrapper"#scrollFrame>
       <ng-container *ngIf="dialogCompanion">
         <app-message *ngFor="let msg of messages$ | async; trackBy: trackByFn" [msg]="msg"
+                     #item
         [authUser]="authUser$ | async"
         ></app-message>
       </ng-container>
