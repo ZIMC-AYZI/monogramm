@@ -37,7 +37,7 @@ export class ChatPageComponent implements OnInit {
     .pipe(switchMap((messages: Observable<IMessage[]>) => messages));
   public authUser$: Observable<firebase.User>;
   public dialogCompanion: IUserDetail;
-  public userMessage = '';
+  // public userMessage = '';
   public currentForm = new FormGroup({});
   public messageControl: FormControl;
   public basicSize = 10;
@@ -76,7 +76,7 @@ export class ChatPageComponent implements OnInit {
   public initForm(): void {
     this.messageControl = new FormControl('', [
       Validators.required,
-      Validators.pattern('')
+      Validators.pattern(/\S/)
     ]);
     this.currentForm.addControl('message-control', this.messageControl);
 
@@ -98,7 +98,7 @@ export class ChatPageComponent implements OnInit {
 
   public showDialogWithUser(user: IUserDetail): void {
     this.basicSize = 10;
-    this.userMessage = '';
+    this.messageControl.reset();
     this.dialogCompanion = user;
     this.genDialogUid()
       .pipe(
@@ -115,22 +115,21 @@ export class ChatPageComponent implements OnInit {
   }
 
   public sendMessage(): void {
-      this.genDialogUid()
-        .pipe(
-          takeUntil(this.ngOnDestroy$),
-          switchMap((uid: string ): Observable<firebase.User> => {
-            return this.authUser$
-              .pipe(
-                tap((user: firestore.User): void  => {
-                  this.messagesService.setMessageToDb(this.userMessage, uid, user);
-                })
-              );
-          })
-        ).subscribe(() => {
-        console.log(this.userMessage);
-        this.userMessage = '';
-      });
-      this.scrollToBottom(0);
+    this.genDialogUid()
+      .pipe(
+        takeUntil(this.ngOnDestroy$),
+        switchMap((uid: string ): Observable<firebase.User> => {
+          return this.authUser$
+            .pipe(
+              tap((user: firestore.User): void  => {
+                this.messagesService.setMessageToDb(this.messageControl.value, uid, user);
+              })
+            );
+        })
+      ).subscribe(() => {
+      this.messageControl.reset();
+    });
+    this.scrollToBottom(0);
   }
 
   private fetchUsers(): void {

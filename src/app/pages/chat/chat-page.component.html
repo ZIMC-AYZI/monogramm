@@ -36,7 +36,6 @@
           <textarea
             matInput
             [formControl]="messageControl"
-            [(ngModel)]="userMessage"
             (keydown.enter)="messageControl.valid ? sendMessage() : null"
             placeholder="Wright a message"></textarea>
         </mat-form-field>
