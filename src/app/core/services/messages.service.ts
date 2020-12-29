@@ -28,12 +28,12 @@ export class MessagesService {
     });
   }
 
-  public getMessagesList(collectionPath: string): Observable<any> {
+  public getMessagesList(collectionPath: string, smgSize): Observable<any> {
     return this.fireStore.collection(collectionPath, ref => ref.orderBy('date'))
       .valueChanges()
       .pipe(
         map((snaps) => {
-            return snaps;
+            return snaps.filter((el, idx) => snaps.length - 1 - smgSize < idx);
         })
       );
   }

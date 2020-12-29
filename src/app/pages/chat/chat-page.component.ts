@@ -1,7 +1,7 @@
 import {
   AfterViewInit,
   Component,
-  ElementRef,
+  ElementRef, HostListener, Inject,
   OnInit,
   QueryList,
   Self,
@@ -11,15 +11,16 @@ import {
 
 import { FirestoreUsersService } from '../../core/services/firestore-users.service';
 import { MessagesService } from '../../core/services/messages.service';
-import { Observable, timer } from 'rxjs';
+import { Observable, of, timer } from 'rxjs';
 import { IUserDetail } from '../../interfaces/i-user';
 import { IMessage } from '../../interfaces/i-message';
 import { AuthService } from '../../core/services/auth.service';
 import firebase from 'firebase';
 import firestore from 'firebase';
-import { map, switchMap, take, takeUntil, tap } from 'rxjs/operators';
+import { map, mergeMap, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 import { NgOnDestroy } from '../../core/services/ng-on-destroy.service';
 import { FormControl, Validators } from '@angular/forms';
+import { log } from 'util';
 
 @Component({
   selector: 'app-chat-page',
@@ -41,6 +42,33 @@ export class ChatPageComponent implements OnInit, AfterViewInit {
     Validators.required,
     Validators.pattern('/^[^\\s]+$/')
   ]);
+  public basicSize = 10;
+
+  @HostListener('scroll', ['$event'])
+  public onScroll(event: any): void {
+    if (!event.target.scrollTop) {
+      this.basicSize += 10;
+      this.genDialogUid()
+        .pipe(
+          takeUntil(this.ngOnDestroy$),
+          tap((collectionPath: string) => {
+            this.messages$.pipe(
+              mergeMap((initialState: IMessage[]): Observable<IMessage[]> => {
+                console.log(initialState);
+                return  this.messagesService.getMessagesList(collectionPath, this.basicSize)
+                  .pipe(
+                    map((newState) => {
+                      console.log(newState);
+                      console.log([...initialState, ...newState]);
+                      return [...initialState, ...newState];
+                    })
+                  );
+              })
+            ).subscribe();
+          })
+        ).subscribe();
+    }
+  }
 
   constructor(
     @Self() private ngOnDestroy$: NgOnDestroy,
@@ -56,12 +84,12 @@ export class ChatPageComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.scrollContainer = this.scrollFrame.nativeElement;
-    this.itemElements.changes
-      .pipe(
-        takeUntil(this.ngOnDestroy$)
-      )
-      .subscribe(() => this.onItemElementsChanged());
+    // this.scrollContainer = this.scrollFrame.nativeElement;
+    // this.itemElements.changes
+    //   .pipe(
+    //     takeUntil(this.ngOnDestroy$)
+    //   )
+    //   .subscribe(() => this.onItemElementsChanged());
   }
 
   private onItemElementsChanged(): void {
@@ -79,6 +107,10 @@ export class ChatPageComponent implements OnInit, AfterViewInit {
         behavior: 'smooth'
       });
     });
+  }
+
+  private loadMoreMessages(): Observable<any> {
+    return of(window.onscroll);
   }
 
   public showDialogWithUser(user: IUserDetail): void {
@@ -131,7 +163,7 @@ export class ChatPageComponent implements OnInit, AfterViewInit {
   }
 
   private fetchMessages(collectionPath: string): void {
-    this.messages$ = this.messagesService.getMessagesList(collectionPath);
+    this.messages$ = this.messagesService.getMessagesList(collectionPath, this.basicSize);
   }
 
   private fetchAuthUser(): void {
