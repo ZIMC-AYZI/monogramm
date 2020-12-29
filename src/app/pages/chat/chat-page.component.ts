@@ -11,7 +11,7 @@ import {
 
 import { FirestoreUsersService } from '../../core/services/firestore-users.service';
 import { MessagesService } from '../../core/services/messages.service';
-import { Observable, of, timer } from 'rxjs';
+import {BehaviorSubject, Observable, of, timer} from 'rxjs';
 import { IUserDetail } from '../../interfaces/i-user';
 import { IMessage } from '../../interfaces/i-message';
 import { AuthService } from '../../core/services/auth.service';
@@ -31,10 +31,11 @@ import { log } from 'util';
 export class ChatPageComponent implements OnInit, AfterViewInit {
   @ViewChild('scrollFrame', {static: false}) scrollFrame: ElementRef;
   @ViewChildren('item') itemElements: QueryList<any>;
-  private scrollContainer: any;
-
+  public messageSub: BehaviorSubject<Observable<IMessage[]>> = new BehaviorSubject<Observable<IMessage[]>>(null);
   public users$: Observable<IUserDetail[]>;
-  public messages$: Observable<IMessage[]>;
+  public messages$ = this.messageSub
+    .asObservable()
+    .pipe(switchMap((messages: Observable<IMessage[]>) => messages));
   public authUser$: Observable<firebase.User>;
   public dialogCompanion: IUserDetail;
   public userMessage = '';
@@ -44,6 +45,8 @@ export class ChatPageComponent implements OnInit, AfterViewInit {
   ]);
   public basicSize = 10;
 
+  private scrollContainer: any;
+
   @HostListener('scroll', ['$event'])
   public onScroll(event: any): void {
     if (!event.target.scrollTop) {
@@ -51,31 +54,21 @@ export class ChatPageComponent implements OnInit, AfterViewInit {
       this.genDialogUid()
         .pipe(
           takeUntil(this.ngOnDestroy$),
-          tap((collectionPath: string) => {
-            this.messages$.pipe(
-              mergeMap((initialState: IMessage[]): Observable<IMessage[]> => {
-                console.log(initialState);
-                return  this.messagesService.getMessagesList(collectionPath, this.basicSize)
-                  .pipe(
-                    map((newState) => {
-                      console.log(newState);
-                      console.log([...initialState, ...newState]);
-                      return [...initialState, ...newState];
-                    })
-                  );
-              })
-            ).subscribe();
-          })
+          tap((collectionPath: string): void => {
+            console.log(collectionPath);
+            this.messageSub.next(this.messagesService.getMessagesList(collectionPath, this.basicSize));
+          }
+          )
         ).subscribe();
     }
   }
-
   constructor(
     @Self() private ngOnDestroy$: NgOnDestroy,
     private firestoreUsersService: FirestoreUsersService,
     private messagesService: MessagesService,
     private authService: AuthService,
   ) {
+    this.messageSub.next(of([]));
   }
 
   ngOnInit(): void {
@@ -84,12 +77,12 @@ export class ChatPageComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    // this.scrollContainer = this.scrollFrame.nativeElement;
-    // this.itemElements.changes
-    //   .pipe(
-    //     takeUntil(this.ngOnDestroy$)
-    //   )
-    //   .subscribe(() => this.onItemElementsChanged());
+    this.scrollContainer = this.scrollFrame.nativeElement;
+    this.itemElements.changes
+      .pipe(
+        takeUntil(this.ngOnDestroy$)
+      )
+      .subscribe(() => this.onItemElementsChanged());
   }
 
   private onItemElementsChanged(): void {
@@ -97,7 +90,7 @@ export class ChatPageComponent implements OnInit, AfterViewInit {
   }
 
   private scrollToBottom(): void {
-    timer(100)
+    timer(1000)
       .pipe(
         take(1)
       ).subscribe(() => {
@@ -109,11 +102,8 @@ export class ChatPageComponent implements OnInit, AfterViewInit {
     });
   }
 
-  private loadMoreMessages(): Observable<any> {
-    return of(window.onscroll);
-  }
-
   public showDialogWithUser(user: IUserDetail): void {
+    this.basicSize = 10;
     this.userMessage = '';
     this.dialogCompanion = user;
     this.genDialogUid()
@@ -163,7 +153,7 @@ export class ChatPageComponent implements OnInit, AfterViewInit {
   }
 
   private fetchMessages(collectionPath: string): void {
-    this.messages$ = this.messagesService.getMessagesList(collectionPath, this.basicSize);
+    this.messageSub.next(this.messagesService.getMessagesList(collectionPath, this.basicSize));
   }
 
   private fetchAuthUser(): void {
