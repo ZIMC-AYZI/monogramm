@@ -129,7 +129,7 @@ export class ChatPageComponent implements OnInit {
       ).subscribe(() => {
       this.messageControl.reset();
     });
-    this.scrollToBottom(0);
+    this.scrollToBottom(100);
   }
 
   private fetchUsers(): void {
@@ -148,7 +148,7 @@ export class ChatPageComponent implements OnInit {
 
   private fetchMessages(collectionPath: string): void {
     this.messageSub.next(this.messagesService.getMessagesList(collectionPath, this.basicSize));
-    this.scrollToBottom(400);
+    this.scrollToBottom(500);
   }
 
   private fetchAuthUser(): void {
