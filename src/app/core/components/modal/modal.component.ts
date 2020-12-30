@@ -52,7 +52,7 @@ export class ModalComponent implements OnInit {
       .pipe(
         take(1)
       ).subscribe( () =>
-      this.router.navigate([myRoutes.logIn.routerPath])
+      this.router.navigate([myRoutes.logIn.fullPath])
     );
   }
 

@@ -7,16 +7,16 @@ const routes: Routes = [
   {
     path: myRoutes.logIn.routerPath,
     loadChildren: () => import('../app/pages/login/login.module').then(m =>
-      m.LoginModule
+      m.LoginModule,
     )
   },
   {
     path: myRoutes.chatPage.fullPath,
     loadChildren: () => import('../app/pages/chat/chat.module').then(m =>
       m.ChatModule),
-    // canActivate: [AuthGuard]
+    canActivate: [AuthGuard]
   },
-  {path: '**', redirectTo: myRoutes.logIn.fullPath, pathMatch: 'full'}
+  {path: '**', redirectTo: myRoutes.logIn.routerPath, pathMatch: 'full'}
 ];
 
 @NgModule({
