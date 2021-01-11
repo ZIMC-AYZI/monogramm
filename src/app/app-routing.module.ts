@@ -16,6 +16,11 @@ const routes: Routes = [
       m.ChatModule),
     canActivate: [AuthGuard]
   },
+  {
+    path: myRoutes.userPage.fullPath,
+    loadChildren: () => import('../app/pages/user-profile/user-profile.module').then(m =>
+      m.UserProfileModule)
+  },
   {path: '**', redirectTo: myRoutes.logIn.routerPath, pathMatch: 'full'}
 ];
 

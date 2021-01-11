@@ -30,7 +30,7 @@ import { MatInputModule } from '@angular/material/input';
     HeaderComponent,
     FooterComponent,
     BurgerMenuComponent,
-    ModalComponent
+    ModalComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,92 @@
+
+$font-family-base: 'Roboto', sans-serif;
+$font-size-base: 14px;
+$line-height-base: 1.4;
+
+@mixin font-base(
+  $size: $font-size-base,
+  $font-weight: 400,
+  $height: $line-height-base,
+  $font-style: normal,
+  $font-family: $font-family-base
+) {
+  font: $font-weight $font-style #{$size}/#{$height $font-family};
+}
+.profile-wrapper {
+  width: 100%;
+  background: #242333;
+  padding: 10px;
+  & .profile-header {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    & .profile-header-wrapper {
+      display: flex;
+      margin-bottom: 5%;
+    }
+    & .profile-header-person-identification {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    &-img {
+      width: 250px;
+      height: 250px;
+      margin-right: 15%;
+      & img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+    &-info {
+      width: 30%;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      &__stats {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        & .count {
+          @include font-base(30px);
+          color: #b6b6c3;
+        }
+        & .type {
+          @include font-base(30px);
+          color: #b6b6c3;
+        }
+      }
+    }
+    &-name {
+      p {
+        @include font-base(25px);
+        color: #b6b6c3;
+      }
+    }
+    &-slash {
+      @include font-base(30px);
+      color: #b6b6c3;
+      margin: 0 2%;
+    }
+    &-position {
+      @include font-base(30px);
+      color: #b6b6c3;
+      text-transform: uppercase;
+    }
+  }
+  & .profile-biography {
+    & .title {
+      @include font-base(20px);
+      color: #b6b6c3;
+    }
+    &-cards {
+      width: 70%;
+      display: flex;
+      margin: 0 auto;
+      justify-content: space-between;
+      & .mat-card {
+        width: 150px;
+      }
+    }
+  }
+}
