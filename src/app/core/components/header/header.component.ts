@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+import { map, take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-header',
@@ -7,9 +10,24 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor() { }
+
+  constructor(
+    private router: Router,
+    private authService: AuthService,
+  ) { }
 
   ngOnInit(): void {
+  }
+
+  public openProfile(): void {
+    this.authService.getAuthUser$().pipe(
+      take(1),
+      map((user) => {
+        return user.uid;
+      })
+    ).subscribe((uid) => {
+      this.router.navigate(['/userPage', uid]);
+    });
   }
 
 }
