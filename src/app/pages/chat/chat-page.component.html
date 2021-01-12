@@ -29,7 +29,9 @@
       <div class="wright-wrapper">
         <div mat-card-avatar
              class="example-header-image"
-             *ngIf="authUser$ | async as authUser">
+             *ngIf="authUser$ | async as authUser"
+             (click)="openProfileAuthUser()"
+        >
           <img [src]="authUser.photoURL" alt="Photo of a Shiba Inu">
         </div>
         <mat-form-field>
@@ -40,7 +42,9 @@
             placeholder="Wright a message"></textarea>
         </mat-form-field>
         <div mat-card-avatar
-             class="example-header-image">
+             class="example-header-image"
+             (click)="openProfileCompanion()"
+        >
           <img [src]="dialogCompanion.info.photoURL" alt="Photo of a Shiba Inu">
         </div>
       </div>
