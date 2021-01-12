@@ -87,6 +87,26 @@ $line-height-base: 1.4;
       justify-content: space-between;
       & .mat-card {
         width: 150px;
+        &:nth-child(2) {
+          background: #fe2852;
+          & mat-card-title, mat-card-subtitle {
+            color: #f1f0f0;
+          }
+        }
+        &:last-child {
+          background: #4353ed;
+          & mat-card-title, mat-card-subtitle {
+            color: #f1f0f0;
+          }
+        }
+        & mat-card-title {
+          @include font-base(25px);
+          color: #666666;
+        }
+        & mat-card-subtitle {
+          @include font-base(14px);
+          color: #b6b6c3;
+        }
       }
     }
   }
