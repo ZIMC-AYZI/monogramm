@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { map, take } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { IUserDetail, IUserInfo } from '../../../interfaces/i-user';
+import firebase from 'firebase';
 
 @Component({
   selector: 'app-header',
@@ -9,7 +12,7 @@ import { map, take } from 'rxjs/operators';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
-
+  public authUser$: Observable<firebase.User>;
 
   constructor(
     private router: Router,
@@ -17,6 +20,7 @@ export class HeaderComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.authUser$ = this.authService.getAuthUser$();
   }
 
   public openProfile(): void {

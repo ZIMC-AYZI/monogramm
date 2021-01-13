@@ -3,6 +3,9 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { filter, map, switchMap, take } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { IUserDetail, IUserInfo } from '../../interfaces/i-user';
+import { AuthService } from './auth.service';
+import firebase from 'firebase';
+import FieldValue = firebase.firestore.FieldValue;
 
 @Injectable({
   providedIn: 'root'
@@ -30,4 +33,10 @@ export class FirestoreUsersService {
         })
       );
   }
+   setFollowerToDb(email, opponentUid): void {
+     console.log('send')
+     this.fireStore.collection('users').doc(email).update({
+       followers: FieldValue.arrayUnion(opponentUid)
+     });
+   }
 }
