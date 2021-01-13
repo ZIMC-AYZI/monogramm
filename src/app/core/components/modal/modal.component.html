@@ -86,10 +86,43 @@
   </ng-template>
 
   <ng-template ngSwitchCase="info">
-    <h1 mat-dialog-title>info</h1>
-    <div mat-dialog-content>{{ data }}</div>
-    <div mat-dialog-actions>
-      <button mat-button mat-dialog-close>Close</button>
+    <div class="info">
+      <div mat-dialog-title>
+        <div class="project-info">
+          <div class="project-info__img">
+            <img src="https://cs8.pikabu.ru/post_img/big/2016/02/04/7/145458292112119207.jpg" alt="">
+          </div>
+          <div class="project-info__name">
+            <h1>Monogram Web</h1>
+            <h4>Version v0.1.0</h4>
+          </div>
+        </div>
+      </div>
+      <div mat-dialog-content>
+        <div class="project-details">
+          <h3>
+            Official free messaging app based on Telegram API for speed and security.
+          </h3>
+          <h3>
+            This software is licensed under GNU GPL version 3.
+          </h3>
+          <h3 class="authors">Authors:</h3>
+          <div class="insta-bloc">
+            <a href="https://www.instagram.com/_zimc/">ZimcGang</a>
+            <img src="../../../../assets/images/instagram-brands.svg" alt="">
+          </div>
+          <div class="insta-bloc">
+            <a href="https://www.instagram.com/_zimc/">DenSokol</a>
+            <img src="../../../../assets/images/instagram-brands.svg" alt="">
+          </div>
+        </div>
+      </div>
+      <div mat-dialog-actions>
+        <button mat-button mat-dialog-close>Close</button>
+      </div>
+      <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+        <mat-icon>favorite</mat-icon>
+      </button>
     </div>
   </ng-template>
 

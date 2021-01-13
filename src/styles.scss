@@ -1,9 +1,19 @@
+@import "assets/shared-styles/vars";
+@import "assets/shared-styles/mixins";
+
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
 }
-.mat-typography p {
+.mat-typography p,
+.mat-typography a,
+.mat-typography h1,
+.mat-typography h2,
+.mat-typography h3,
+.mat-typography h4,
+.mat-typography h5,
+.mat-typography h6 {
   margin: 0;
   padding: 0;
 }
