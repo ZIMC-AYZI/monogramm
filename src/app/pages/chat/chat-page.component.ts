@@ -11,7 +11,7 @@ import {
 import { FirestoreUsersService } from '../../core/services/firestore-users.service';
 import { MessagesService } from '../../core/services/messages.service';
 import {BehaviorSubject, Observable, of, timer} from 'rxjs';
-import { IUserDetail } from '../../interfaces/i-user';
+import { IUserDetail, IUserInfo } from '../../interfaces/i-user';
 import { IMessage } from '../../interfaces/i-message';
 import { AuthService } from '../../core/services/auth.service';
 import firebase from 'firebase';
@@ -19,6 +19,7 @@ import firestore from 'firebase';
 import { map, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 import { NgOnDestroy } from '../../core/services/ng-on-destroy.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-chat-page',
@@ -63,6 +64,7 @@ export class ChatPageComponent implements OnInit {
     private firestoreUsersService: FirestoreUsersService,
     private messagesService: MessagesService,
     private authService: AuthService,
+    private router: Router
   ) {
     this.messageSub.next(of([]));
   }
@@ -184,5 +186,20 @@ export class ChatPageComponent implements OnInit {
           return (+user.uid + +this.dialogCompanion.info.uid).toString();
         })
       );
+  }
+
+  public openProfileCompanion(): void {
+      this.router.navigate(['/userPage', this.dialogCompanion.info.userGlobalId]);
+  }
+
+  public openProfileAuthUser(): void {
+    this.authService.getAuthUser$().pipe(
+      take(1),
+      map((user) => {
+        return user.uid;
+      })
+    ).subscribe((uid) => {
+      this.router.navigate(['/userPage', uid]);
+    });
   }
 }

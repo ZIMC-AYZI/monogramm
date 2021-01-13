@@ -41,7 +41,8 @@ export class AuthService {
             uid: currentUid,
             userGlobalId: user.uid
           },
-          creationTime: Date.now()
+          creationTime: Date.now(),
+          followers: []
         });
       })
     );

@@ -1,8 +1,8 @@
-<div class="profile-wrapper">
+<div *ngIf="infoUser$ | async as infoUser" class="profile-wrapper">
   <div class="profile-header">
     <div class="profile-header-wrapper">
       <div class="profile-header-img">
-        <img src="https://i.pinimg.com/236x/f4/8a/40/f48a40fcc3bdf0916b9fb83abe3ab496.jpg" alt="" class="img">
+        <img [src]="infoUser.info.photoURL" alt="" class="img">
       </div>
       <div class="profile-header-info">
         <div class="profile-header-info__stats">
@@ -10,7 +10,7 @@
           <p class="type">Posts</p>
         </div>
         <div class="profile-header-info__stats">
-          <p class="count">34</p>
+          <p class="count">{{ infoUser.followers.length }}</p>
           <p class="type">Followers</p>
         </div>
         <div class="profile-header-info__stats">
@@ -21,7 +21,7 @@
     </div>
     <div class="profile-header-person-identification title-slash">
       <div class="profile-header-name">
-      <p>Георгий Юрьевич </p>
+      <p>{{ infoUser.info.displayName }} </p>
       </div>
       <div class="profile-header-slash">
         |
@@ -70,7 +70,7 @@
     </div>
     <div class="profile-portfolio-content">
     <div class="profile-portfolio-content-img">
-      <img src="https://i.pinimg.com/236x/cc/e5/fe/cce5fe6d7466afd35abfdfd53b0910e4.jpg" alt="photo">
+      <img [src]="infoUser.info.photoURL" alt="photo">
     </div>
       <div class="profile-portfolio-content-activity">
         <mat-card>
@@ -81,7 +81,7 @@
           <mat-card-title>Regular</mat-card-title>
           <mat-card-subtitle>Activity</mat-card-subtitle>
         </mat-card>
-        <mat-card class="follow">
+        <mat-card (click)="follow()" class="follow">
           <mat-card-title>Follow</mat-card-title>
         </mat-card>
       </div>
