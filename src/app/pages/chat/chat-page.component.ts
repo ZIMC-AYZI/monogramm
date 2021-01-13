@@ -11,7 +11,7 @@ import {
 import { FirestoreUsersService } from '../../core/services/firestore-users.service';
 import { MessagesService } from '../../core/services/messages.service';
 import {BehaviorSubject, Observable, of, timer} from 'rxjs';
-import { IUserDetail, IUserInfo } from '../../interfaces/i-user';
+import { IUserDetail } from '../../interfaces/i-user';
 import { IMessage } from '../../interfaces/i-message';
 import { AuthService } from '../../core/services/auth.service';
 import firebase from 'firebase';
