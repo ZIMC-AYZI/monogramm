@@ -38,7 +38,6 @@ export class ChatPageComponent implements OnInit {
     .pipe(switchMap((messages: Observable<IMessage[]>) => messages));
   public authUser$: Observable<firebase.User>;
   public dialogCompanion: IUserDetail;
-  // public userMessage = '';
   public currentForm = new FormGroup({});
   public messageControl: FormControl;
   public basicSize = 10;

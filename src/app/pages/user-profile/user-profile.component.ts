@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../../core/services/auth.service';
 import { ActivatedRoute } from '@angular/router';
-import { map, switchMap, take } from 'rxjs/operators';
-import { FirestoreUsersService } from '../../core/services/firestore-users.service';
+import { switchMap, take, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { IUserDetail, IUserInfo } from '../../interfaces/i-user';
+import { AuthService } from '../../core/services/auth.service';
+import { FirestoreUsersService } from '../../core/services/firestore-users.service';
+import { IUserDetail } from '../../interfaces/i-user';
+import firebase from 'firebase';
 
 @Component({
   selector: 'app-user-profile',
@@ -13,7 +14,12 @@ import { IUserDetail, IUserInfo } from '../../interfaces/i-user';
 })
 export class UserProfileComponent implements OnInit {
 public infoUser$: Observable<IUserDetail>;
+public authUserUid: string;
+public isFollowed: boolean;
 public opponentUid: string;
+public followers$: Observable<string[]>;
+private opponentEmail: string;
+
   constructor(
     private authService: AuthService,
     private activatedRoute: ActivatedRoute,
@@ -21,24 +27,51 @@ public opponentUid: string;
   ) { }
 
   ngOnInit(): void {
-    this.activatedRoute.paramMap.pipe(
+    this.fetchUserInfo();
+    this.fetchAuthUser();
+    this.fetchFollowers();
+  }
+
+  private fetchUserInfo(): void {
+    this.infoUser$ = this.activatedRoute.paramMap.pipe(
       take(1),
-      map((params) => {
+      tap((params): void => {
         this.opponentUid = params.get('uid');
+      }),
+      switchMap((): Observable<any> => this.fireStoreUsersService.getUserForInfoPage(this.opponentUid)),
+      tap(({ info }: IUserDetail) => {
+        this.opponentEmail = info.email;
       })
-    ).subscribe(() => {
-      this.infoUser$ = this.fireStoreUsersService.getUserForInfoPage(this.opponentUid);
-    });
+    );
+  }
+
+  private fetchAuthUser(): void {
+    this.authService.getAuthUser$().pipe(
+      take(1),
+      tap((user: firebase.User) => {
+        this.authUserUid = user.uid;
+      })
+    ).subscribe();
+  }
+
+  private fetchFollowers(): void {
+    this.followers$ = this.infoUser$.pipe(
+      take(1),
+      switchMap((opponent: IUserDetail): Observable<string[]> => {
+        return this.fireStoreUsersService.getAllFollowers$(opponent.info.email);
+      }),
+      tap((followers: string[]) => {
+        this.isFollowed = !!followers.filter(follower => follower === this.authUserUid).toString();
+      })
+    );
+    this.followers$.subscribe();
   }
 
   public follow(): void {
-    this.infoUser$.pipe(
-      take(1),
-      map((user) => {
-        return user.info.email;
-      })
-    ).subscribe((email) => {
-      this.fireStoreUsersService.setFollowerToDb(email, this.opponentUid);
-    });
+    this.fireStoreUsersService.setFollowerToDb(this.opponentEmail, this.authUserUid);
+  }
+
+  public unFollow(): void {
+    this.fireStoreUsersService.removeFollowerFromDb(this.opponentEmail, this.authUserUid);
   }
 }

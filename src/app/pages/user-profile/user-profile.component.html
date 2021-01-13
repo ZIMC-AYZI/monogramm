@@ -81,8 +81,8 @@
           <mat-card-title>Regular</mat-card-title>
           <mat-card-subtitle>Activity</mat-card-subtitle>
         </mat-card>
-        <mat-card (click)="follow()" class="follow">
-          <mat-card-title>Follow</mat-card-title>
+        <mat-card (click)="isFollowed ? unFollow() : follow()" class="follow">
+          <mat-card-title>{{ isFollowed ? 'Unfollow' : 'Follow' }}</mat-card-title>
         </mat-card>
       </div>
     </div>
