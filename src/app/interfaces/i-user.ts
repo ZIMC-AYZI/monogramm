@@ -1,7 +1,7 @@
 export interface IUserDetail {
   creationTime: number;
   info: IUserInfo;
-  followers: string[];
+  followers: object;
 }
 
 export interface IUserInfo extends IUser{

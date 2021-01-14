@@ -35,23 +35,44 @@ export class FirestoreUsersService {
   }
 
   setFollowerToDb(email, authUid): void {
-    this.fireStore.collection('users').doc(email).update({
-      followers: FieldValue.arrayUnion(authUid)
+    const collectionState = this.fireStore.collection('users').doc(email).get();
+    collectionState
+      .pipe(
+        take(1),
+        map((collection) => collection.data())
+      ).subscribe((collection: IUserDetail) => {
+      const followers = collection.followers;
+      const newFollower = {};
+      newFollower[authUid] = authUid;
+
+      this.fireStore.collection('users').doc(email).update({
+        followers: Object.assign({}, followers, newFollower)
+      });
     });
   }
 
   removeFollowerFromDb(email, authUid): void {
-    this.fireStore.collection('users').doc(email).update({
-      followers: FieldValue.arrayRemove(authUid)
+    const collectionState = this.fireStore.collection('users').doc(email).get();
+    collectionState
+      .pipe(
+        take(1),
+        map((collection) => collection.data())
+      ).subscribe((collection: IUserDetail) => {
+      const followers = collection.followers;
+      delete followers[authUid];
+
+      this.fireStore.collection('users').doc(email).update({
+        followers: Object.assign({}, followers)
+      });
     });
   }
 
-  getAllFollowers$(email): Observable<string[]> {
+  getAllFollowers$(email): Observable<object> {
     return this.fireStore.collection('users')
       .doc(email)
       .valueChanges()
       .pipe(
-        map((user: IUserDetail): string[] => user.followers)
+        map((user: IUserDetail): object => user.followers)
       );
   }
 }

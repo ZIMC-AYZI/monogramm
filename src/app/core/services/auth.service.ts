@@ -42,7 +42,7 @@ export class AuthService {
             userGlobalId: user.uid
           },
           creationTime: Date.now(),
-          followers: []
+          followers: {}
         });
       })
     );

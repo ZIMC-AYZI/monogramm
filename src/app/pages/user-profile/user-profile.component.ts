@@ -17,7 +17,8 @@ public infoUser$: Observable<IUserDetail>;
 public authUserUid: string;
 public isFollowed: boolean;
 public opponentUid: string;
-public followers$: Observable<string[]>;
+public followers$: Observable<object>;
+public keys = Object.keys;
 private opponentEmail: string;
 
   constructor(
@@ -57,11 +58,11 @@ private opponentEmail: string;
   private fetchFollowers(): void {
     this.followers$ = this.infoUser$.pipe(
       take(1),
-      switchMap((opponent: IUserDetail): Observable<string[]> => {
+      switchMap((opponent: IUserDetail): Observable<object> => {
         return this.fireStoreUsersService.getAllFollowers$(opponent.info.email);
       }),
-      tap((followers: string[]) => {
-        this.isFollowed = !!followers.filter(follower => follower === this.authUserUid).toString();
+      tap((followers: object) => {
+        this.isFollowed = !!followers[this.authUserUid];
       })
     );
     this.followers$.subscribe();
