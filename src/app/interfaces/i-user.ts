@@ -1,7 +1,7 @@
 export interface IUserDetail {
   creationTime: number;
   info: IUserInfo;
-  followers: object;
+  followers: IFollowers;
 }
 
 export interface IUserInfo extends IUser{
@@ -13,4 +13,8 @@ export interface IUserInfo extends IUser{
 export interface IUser {
   photoURL: string;
   displayName: string;
+}
+
+export interface IFollowers {
+  [key: string]: string;
 }

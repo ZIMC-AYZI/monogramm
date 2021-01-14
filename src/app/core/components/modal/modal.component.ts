@@ -6,6 +6,7 @@ import { map, startWith, take } from 'rxjs/operators';
 import { AuthService } from '../../services/auth.service';
 import { myRoutes } from '../../constants/router';
 import { Router } from '@angular/router';
+import {LoginComponent} from '../../../pages/login/login.component';
 
 @Component({
   selector: 'app-modal',
@@ -48,6 +49,7 @@ export class ModalComponent implements OnInit {
   }
 
   public logOut(): void {
+    localStorage.removeItem('user');
     this.authService.logout()
       .pipe(
         take(1)

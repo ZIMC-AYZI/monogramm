@@ -1,11 +1,11 @@
-import { Component, OnInit, Self } from '@angular/core';
-import { AuthService } from '../../core/services/auth.service';
-import { Router } from '@angular/router';
-import { map, switchMap, take, takeUntil, tap } from 'rxjs/operators';
-import { NgOnDestroy } from '../../core/services/ng-on-destroy.service';
+import {Component, OnInit, Self} from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { myRoutes } from '../../core/constants/router';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { switchMap, takeUntil } from 'rxjs/operators';
+import { AuthService } from '../../core/services/auth.service';
+import { NgOnDestroy } from '../../core/services/ng-on-destroy.service';
+import { myRoutes } from '../../core/constants/router';
 import { IUserDetail } from '../../interfaces/i-user';
 import firebase from 'firebase';
 
@@ -16,7 +16,8 @@ import firebase from 'firebase';
   providers: [NgOnDestroy]
 })
 export class LoginComponent implements OnInit {
-  public authUser$: Observable<firebase.User>;
+  public authUser$: Observable<firebase.User> = this.authService.getAuthUser$();
+  public user: any;
 
   registerForm: FormGroup;
 
@@ -28,8 +29,14 @@ export class LoginComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.authUser$ = this.authService.getAuthUser$();
+    this.initUser();
+    this.initRegistrationForm();
+  }
 
+  private initUser(): void {
+    this.user = JSON.parse(localStorage.getItem('user')) || this.authUser;
+  }
+  private initRegistrationForm(): void {
     this.registerForm = this.fb.group({
       email: new FormControl('', [
         Validators.email, Validators.required
@@ -38,6 +45,16 @@ export class LoginComponent implements OnInit {
         Validators.required, Validators.minLength(6)
       ])
     });
+  }
+
+  private get authUser(): any {
+    this.authUser$.subscribe(user => {
+      if (user) {
+        this.user = user;
+        localStorage.setItem('user', JSON.stringify(user));
+      }
+    });
+    return this.user;
   }
 
   login(): void {

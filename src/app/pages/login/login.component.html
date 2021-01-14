@@ -1,7 +1,7 @@
 <div class="container">
 
 
-  <div *ngIf="!(authUser$ | async); else notAuth" class="login-wrapper">
+  <div *ngIf="!user else notAuth" class="login-wrapper">
     <mat-card>
       <form class="form" [formGroup]="registerForm">
         <mat-form-field class="example-full-width">
