@@ -1,12 +1,13 @@
 import { Component, OnInit, Self } from '@angular/core';
 import { AuthService } from '../../core/services/auth.service';
 import { Router } from '@angular/router';
-import { switchMap, takeUntil } from 'rxjs/operators';
+import { map, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 import { NgOnDestroy } from '../../core/services/ng-on-destroy.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { myRoutes } from '../../core/constants/router';
 import { Observable } from 'rxjs';
 import { IUserDetail } from '../../interfaces/i-user';
+import firebase from 'firebase';
 
 @Component({
   selector: 'app-login',
@@ -15,6 +16,7 @@ import { IUserDetail } from '../../interfaces/i-user';
   providers: [NgOnDestroy]
 })
 export class LoginComponent implements OnInit {
+  public authUser$: Observable<firebase.User>;
 
   registerForm: FormGroup;
 
@@ -26,6 +28,8 @@ export class LoginComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.authUser$ = this.authService.getAuthUser$();
+
     this.registerForm = this.fb.group({
       email: new FormControl('', [
         Validators.email, Validators.required
