@@ -4,7 +4,7 @@ import {map, switchMap, take, tap} from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { AuthService } from '../../core/services/auth.service';
 import { FirestoreUsersService } from '../../core/services/firestore-users.service';
-import { IUserDetail } from '../../interfaces/i-user';
+import {IFollowers, IUserDetail} from '../../interfaces/i-user';
 import firebase from 'firebase';
 
 @Component({
@@ -29,8 +29,8 @@ private opponentEmail: string;
 
   ngOnInit(): void {
     this.fetchUserInfo();
-    // this.fetchAuthUser();
-    // this.fetchFollowers();
+    this.fetchAuthUser();
+    this.fetchFollowers();
   }
 
   private fetchUserInfo(): void {
@@ -57,15 +57,12 @@ private opponentEmail: string;
 
   private fetchFollowers(): void {
     this.followers$ = this.infoUser$.pipe(
-      take(1),
-      switchMap((opponent: IUserDetail): Observable<object> => {
-        return this.fireStoreUsersService.getAllFollowers$(opponent.info.email);
-      }),
+      switchMap((opponent: IUserDetail): Observable<IFollowers> => this.fireStoreUsersService.getAllFollowers$(opponent.info.email)),
       tap((followers: object) => {
         this.isFollowed = !!followers[this.authUserUid];
       })
     );
-    this.followers$.subscribe();
+    this.followers$.pipe(take(1)).subscribe();
   }
 
   public follow(): void {

@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {map, take} from 'rxjs/operators';
 import {Observable} from 'rxjs';
-import {IUserDetail} from '../../interfaces/i-user';
+import {IFollowers, IUserDetail} from '../../interfaces/i-user';
 import firebase from 'firebase';
 
 @Injectable({
@@ -66,12 +66,12 @@ export class FirestoreUsersService {
     });
   }
 
-  getAllFollowers$(email): Observable<object> {
+  getAllFollowers$(email): Observable<IFollowers> {
     return this.fireStore.collection('users')
       .doc(email)
       .valueChanges()
       .pipe(
-        map((user: IUserDetail): object => user.followers)
+        map((user: IUserDetail): IFollowers => user.followers)
       );
   }
 }
