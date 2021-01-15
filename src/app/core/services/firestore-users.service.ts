@@ -4,7 +4,6 @@ import {map, take} from 'rxjs/operators';
 import {Observable} from 'rxjs';
 import {IUserDetail} from '../../interfaces/i-user';
 import firebase from 'firebase';
-import FieldValue = firebase.firestore.FieldValue;
 
 @Injectable({
   providedIn: 'root'
@@ -20,15 +19,15 @@ export class FirestoreUsersService {
     return this.fireStore.collection('users')
       .valueChanges()
       .pipe(
-        map((snaps) => snaps)
+        map((users) => users)
       );
   }
 
-  getUserForInfoPage(uid: string): Observable<any> {
+  getUserForInfoPage(uid: string): Observable<IUserDetail> {
     return this.fireStore.collection('users')
       .valueChanges()
       .pipe(
-        map((users: IUserDetail[]): IUserDetail[] => {
+        map((users: IUserDetail[]): IUserDetail => {
           return Object.assign({}, ...users.filter((user: IUserDetail): boolean => user.info.userGlobalId === uid));
         })
       );

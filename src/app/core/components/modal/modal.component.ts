@@ -49,7 +49,6 @@ export class ModalComponent implements OnInit {
   }
 
   public logOut(): void {
-    localStorage.removeItem('user');
     this.authService.logout()
       .pipe(
         take(1)

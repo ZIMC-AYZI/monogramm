@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { switchMap, take, tap } from 'rxjs/operators';
+import {map, switchMap, take, tap} from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { AuthService } from '../../core/services/auth.service';
 import { FirestoreUsersService } from '../../core/services/firestore-users.service';
@@ -29,19 +29,19 @@ private opponentEmail: string;
 
   ngOnInit(): void {
     this.fetchUserInfo();
-    this.fetchAuthUser();
-    this.fetchFollowers();
+    // this.fetchAuthUser();
+    // this.fetchFollowers();
   }
 
   private fetchUserInfo(): void {
     this.infoUser$ = this.activatedRoute.paramMap.pipe(
-      take(1),
-      tap((params): void => {
+      map((params): string => {
         this.opponentUid = params.get('uid');
+        return params.get('uid');
       }),
-      switchMap((): Observable<any> => this.fireStoreUsersService.getUserForInfoPage(this.opponentUid)),
-      tap(({ info }: IUserDetail) => {
-        this.opponentEmail = info.email;
+      switchMap((uid: string): Observable<IUserDetail> => this.fireStoreUsersService.getUserForInfoPage(uid)),
+      tap((user: IUserDetail): void => {
+        this.opponentEmail = user.info.email;
       })
     );
   }

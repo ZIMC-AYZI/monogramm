@@ -1,7 +1,5 @@
 <div class="container">
-
-
-  <div *ngIf="!user else notAuth" class="login-wrapper">
+  <div class="login-wrapper">
     <mat-card>
       <form class="form" [formGroup]="registerForm">
         <mat-form-field class="example-full-width">
@@ -30,14 +28,4 @@
       </div>
     </mat-card>
   </div>
-
- <ng-template #notAuth>
-   <div>КОГДА ЮЗЕР УЖЕ АВТОРИЗИРОВАН</div>
- </ng-template>
-
-  <ng-template #loader>
-    <mat-spinner color="warn"></mat-spinner>
-  </ng-template>
-
-
 </div>

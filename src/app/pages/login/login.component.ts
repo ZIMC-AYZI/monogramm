@@ -16,9 +16,6 @@ import firebase from 'firebase';
   providers: [NgOnDestroy]
 })
 export class LoginComponent implements OnInit {
-  public authUser$: Observable<firebase.User> = this.authService.getAuthUser$();
-  public user: any;
-
   registerForm: FormGroup;
 
   constructor(
@@ -29,13 +26,9 @@ export class LoginComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.initUser();
     this.initRegistrationForm();
   }
 
-  private initUser(): void {
-    this.user = JSON.parse(localStorage.getItem('user')) || this.authUser;
-  }
   private initRegistrationForm(): void {
     this.registerForm = this.fb.group({
       email: new FormControl('', [
@@ -47,15 +40,6 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  private get authUser(): any {
-    this.authUser$.subscribe(user => {
-      if (user) {
-        this.user = user;
-        localStorage.setItem('user', JSON.stringify(user));
-      }
-    });
-    return this.user;
-  }
 
   login(): void {
     this.authService.loginViaGoogle()
