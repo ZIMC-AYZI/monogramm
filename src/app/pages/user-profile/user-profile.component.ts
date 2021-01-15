@@ -1,16 +1,18 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, Self} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import {map, switchMap, take, tap} from 'rxjs/operators';
+import {map, switchMap, take, takeUntil, tap} from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { AuthService } from '../../core/services/auth.service';
 import { FirestoreUsersService } from '../../core/services/firestore-users.service';
 import {IFollowers, IUserDetail} from '../../interfaces/i-user';
 import firebase from 'firebase';
+import {NgOnDestroy} from '../../core/services/ng-on-destroy.service';
 
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
-  styleUrls: ['./user-profile.component.scss']
+  styleUrls: ['./user-profile.component.scss'],
+  providers: [NgOnDestroy]
 })
 export class UserProfileComponent implements OnInit {
 public infoUser$: Observable<IUserDetail>;
@@ -22,6 +24,7 @@ public keys = Object.keys;
 private opponentEmail: string;
 
   constructor(
+    @Self() private ngOnDestroy$: NgOnDestroy,
     private authService: AuthService,
     private activatedRoute: ActivatedRoute,
     private fireStoreUsersService: FirestoreUsersService
@@ -62,7 +65,7 @@ private opponentEmail: string;
         this.isFollowed = !!followers[this.authUserUid];
       })
     );
-    this.followers$.pipe(take(1)).subscribe();
+    this.followers$.pipe(takeUntil(this.ngOnDestroy$)).subscribe();
   }
 
   public follow(): void {
